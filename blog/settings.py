@@ -4,10 +4,10 @@ import django_heroku
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # noinspection SpellCheckingInspection
-#SECRET_KEY = 'b-4-%_mt&x)7wrfd+z!^d8_+sbqvz%ah^lp34xi2)!4w@pyiro'
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'b-4-%_mt&x)7wrfd+z!^d8_+sbqvz%ah^lp34xi2)!4w@pyiro'
+#SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = os.environ('DEBUG_VALUE')
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'intense-everglades-14440.herokuapp.com',
@@ -119,8 +119,8 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER:')
+EMAIL_HOST_USER = 'mohslahmed100@gmail.com'
 
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD:')
+EMAIL_HOST_PASSWORD = 'pawergot90'
 
 django_heroku.settings(locals())
