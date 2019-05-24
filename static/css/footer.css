@@ -1,0 +1,36 @@
+#footer-section {
+    width: 100%;
+    margin-top: 100px;
+}
+
+#footer-container {
+    padding-bottom: 20px;
+    text-align: center;
+    background: white;
+    width: 100%;
+    max-width: 100%;
+}
+
+.footer-top {
+    padding-top: 100px;
+    border-bottom-width: 30px;
+    padding-bottom: 90px;
+}
+
+.footer-top .cell ul {
+    margin-top: 30px;
+}
+
+.footer-top .cell ul li a {
+    color: rgba(0, 0, 0, 0.39);
+    font-weight: bold;
+    font-size: small;
+}
+
+.copy-right {
+    color: rgba(0, 0, 0, 0.39);
+}
+
+.footer-top .cell {
+    margin-top: 50px;
+}

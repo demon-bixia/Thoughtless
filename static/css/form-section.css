@@ -1,0 +1,73 @@
+#form-section {
+    width: 100%;
+
+    background: white;
+    padding: 130px 100px;
+}
+
+#form-section .form-container {
+}
+
+.form-container .from-intro {
+    margin-bottom: 50px;
+    font-weight: 300;
+    font-family: "Yu Gothic UI", sans-serif;
+}
+
+#form .form-input {
+    font-family: "Yu Gothic UI", sans-serif;
+    outline-color: transparent;
+    margin-top: 5px;
+    font-size: .8rem;
+    text-transform: none;
+    font-weight: normal;
+    letter-spacing: 0.1rem;
+    color: #373737;
+    border-radius: .1rem;
+    background-color: #fafbfc;
+    border: 1px solid #ecedf2;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+
+}
+
+#form .form-input:focus {
+    background-color: #fff;
+    border-color: #6773f1;
+    box-shadow: none;
+    color: #6773f1;
+}
+
+#form .submit-button button {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    font-size: 1rem !important;
+    border-radius: .3rem !important;
+    background-color: #2fca74;
+    border-color: #2fca74;
+}
+
+#form .submit-button button:hover {
+    background-color: #39d47e;
+    border-color: #39d47e;
+
+}
+
+#form .submit-button button:focus {
+    box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, .3);
+    transform: translateY(-1px);
+    outline: none;
+    outline-color: transparent;
+
+}
+
+@media screen and (max-width: 638px) {
+    #form-section {
+        padding: 130px 30px;
+    }
+}

@@ -1,0 +1,136 @@
+#blog-section {
+
+}
+
+.blog-container {
+    padding: 0 100px;
+}
+
+.post-header {
+    background: white;
+    padding: 4rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.post-header .blog-title {
+    font-size: 2rem;
+    color: #000;
+    font-weight: 300;
+    font-family: "Yu Gothic UI", sans-serif;
+}
+
+.post-header .blog-title:hover {
+    color: #6773f1;
+    transition: all 0.6s ease;
+}
+
+.post-header .blog-info span {
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.post-header .blog-info a:not(.button) {
+    color: #6773f1;
+}
+
+.post-header .blog-info a.button {
+    margin-top: 15px;
+    border-radius: 5px;
+    transform: scale(0.8);
+    height: 30px;
+    border-color: red;
+    background: white;
+    color: red;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-header .blog-info a.button:hover {
+    background: linear-gradient(90deg, orangered, darkorange);
+    border: white;
+    color: white;
+    transition: all 0.8s ease;
+}
+
+/*noinspection CssReplaceWithShorthandSafely*/
+.img-container {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.img-container:hover {
+    transform: scale(1.3);
+}
+
+.img-container:after {
+    content: "";
+    background: rgba(196, 196, 196, 0.54);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.img-container:hover::after {
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    display: block;
+    cursor: pointer;
+}
+
+.post-content {
+    background: white;
+    padding: 4rem 4rem;
+}
+
+.post-content p {
+    color: #6d7485;
+}
+
+.post-content a:hover {
+    color: #000000;
+    transition: all 0.3s ease;
+}
+
+.post-content .content-divider {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    background: rgb(236, 237, 242);
+}
+
+.post-content .avatar {
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+}
+
+@media screen and (max-width: 638px) {
+    .blog-container {
+        padding: 0 0;
+    }
+
+    .avatar-cell {
+        display: none;
+    }
+}

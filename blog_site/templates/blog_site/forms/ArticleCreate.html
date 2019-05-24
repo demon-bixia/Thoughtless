@@ -1,0 +1,220 @@
+{% extends 'blog_site/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block assets %}
+    <link href="{% static 'css/form-section.css' %}" rel="stylesheet">
+{% endblock %}
+{% block style %}
+    <!--suppress CssUnusedSymbol -->
+    <style>
+    body{
+        background: white;
+    }
+    #form .error{
+        border: 1px solid #b60008;
+        background: white;
+    }
+    #form .error:focus{
+        border-color: #f11914;
+    }
+    #form .form-input{
+        margin-bottom: 0;
+    }
+    #form .cell{
+        margin-bottom: 16px;
+    }
+    #form .error-text {
+        color: #f11914;
+    }
+    #form-section{
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    #form label.form-input{
+        height:39px;
+        cursor: pointer;
+        padding: 8px;
+        color: #b7b7b7;
+        transition:all 0.3s ease;
+        overflow: hidden;
+    }
+    #form label.form-input:focus{
+        background: transparent;
+        border-color:#6773f1;
+        color:#6773f1;
+    }
+    #footer-container{
+        border-top: 1px solid #ecedf2;
+    }
+    #form .alert-danger{
+        background: rgba(204, 0, 0, 0.17);
+    }
+    #form .alert-success{
+        background: rgba(0, 200, 81, 0.17);
+    }
+    label{
+        color: #767676;
+        font-weight: 300;
+    }
+
+    #paragraph-section{
+        width:100%;
+        border-top: 1px solid #ecedf2;
+        margin:30px 0;
+    }
+
+    #paragraph-section .paragraph-section-header{
+        margin:30px 0;
+        font-weight: 300;
+        font-family: "Yu Gothic UI", sans-serif;
+    }
+
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="form-section">
+        <div class="form-container grid-container">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-3">
+                    <h3 class="from-intro" style="margin-bottom: 30px">Create a new <br>Article</h3>
+                    <hr style="width:100px;margin:0 0 20px 0;border-bottom:2px solid #39d47e;" class="hide-for-small-only hide-for-medium-only">
+                </div>
+                <div class="cell small-12 medium-9">
+                    <form action="" id="form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
+                    {% if form.non_field_errors %}
+                        <div class="callout alert-danger" style="padding:5px;color: rgb(0,0,0);border:1px solid rgba(255,255,255,0.97)" data-closable>
+                            <p>{{ form.non_field_errors }}</p>
+                            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="callout alert-{{ message.tags }}" style="padding:5px;color: rgb(0,0,0);border:1px solid rgba(255,255,255,0.97)" data-closable>
+                            <p>{{ message }}</p>
+                            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                        <div class="grid-x grid-margin-x">
+                            <div class="cell small-12 medium-6">
+                                {{ form.main_title.label_tag }}
+                                {% if form.main_title.errors %}
+                                {% render_field form.main_title class="form-input error" placeholder="main_title*" tabindex="5"%}
+                                    {% for error in form.main_title.errors %}
+                                            <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                {% else %}
+                                {% render_field  form.main_title class="form-input" placeholder="main_title*" tabindex="5"%}
+                                    <small class="error-text"></small>
+                                {% endif %}
+                            </div>
+                            <div class="cell small-12 medium-6">
+                                {{ form.header_image.label_tag }}
+                                {% if form.header_image.errors %}
+                                <label for="id_header_image" class="file-upload form-input error" tabindex="6">
+                                    choose header_image
+                                </label>
+                                {% render_field form.header_image class="form-input show-for-sr" placeholder="header_image*" id="id_header_image"  tabindex="-1"%}
+                                    {% for error in form.header_image.errors %}
+                                            <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                {% else %}
+                                <label for="id_header_image" class="file-upload form-input" tabindex="6">
+                                    choose header_image
+                                </label>
+                                {% render_field form.header_image class="form-input show-for-sr" id="id_header_image" placeholder="header_image*" tabindex="-1" %}
+                                        <small class="error-text"></small>
+                                {% endif %}
+                            </div>
+                            <div class="cell small-12 medium-6">
+                            {{ form.tags.label_tag }}
+                                {% if form.tags.errors %}
+                                {% render_field form.tags class="form-input error" placeholder="tags*" tabindex="7"%}
+                                    {% for error in form.tags.errors %}
+                                            <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                {% else %}
+                                {% render_field form.tags class="form-input" placeholder="bio*" tabindex="7"%}
+                                        <small class="error-text"></small>
+                                {% endif %}
+                            </div>
+                            <div class="cell small-12 medium-6">
+                                {{ form.topic.label_tag }}
+                                {% if form.topic.errors %}
+                                {% render_field form.topic class="form-input error" placeholder="tags*" tabindex="7"%}
+                                    {% for error in form.topic.errors %}
+                                            <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                {% else %}
+                                {% render_field form.topic class="form-input" placeholder="bio*" tabindex="7"%}
+                                        <small class="error-text"></small>
+                                {% endif %}
+                            </div>
+                            <div id="paragraph-section">
+                                    <h3 class="paragraph-section-header">Paragraphs:</h3>
+                                        <textarea name="text_area_1" id="id_text_area_1" cols="30" rows="5" placeholder="paragraph"
+                                         class="form-input"></textarea>
+                                        <div id="paragraphs">
+                                        </div>
+                                <input type="number" value="1" id="input_counter" name="input_counter" style="visibility:hidden;height: 0;width: 0;">
+                                <div class="paragraph-section">
+                                    <div class="small button-group align-right">
+                                      <a id="remove" class="button" style="background: rgba(113,125,126,0); margin-right: 4px;border: 1px solid #efefef;border-radius: 2px;">
+                                          <i class="fa fa-minus" style="color: #959faa;"></i></a>
+                                      <a id="split" class="button" style="background: rgba(113,125,126,0);border: 1px solid #efefef;border-radius: 2px;">
+                                          <i class="fa fa-slash" style="color:#959faa;"></i></a>
+                                      <a id="add" class="button" style="background: rgba(113,125,126,0);border: 1px solid #efefef;border-radius: 2px;">
+                                          <i class="fa fa-plus" style="color:#959faa;"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- submit button-->
+                            <div class="cell small-12 submit-button">
+                                <button class="button" type="submit" tabindex="8">Submit The Article</button>
+                            </div>
+                           <div class="cell small-12 medium-6"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let error = document.querySelectorAll('#form .error');
+            let file_label = document.querySelector('#form label.form-input');
+            let file_input = document.querySelector('#id_header_image');
+
+            error.forEach(function(value){
+                value.addEventListener('input', function(){
+                    this.classList.remove('error')
+                })
+            });
+
+            file_input.addEventListener('change', function(){
+                let fullPath = this.value;
+                if(fullPath){
+                    let startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\'): fullPath.lastIndexOf('/'));
+                    let filename = fullPath.substring(startIndex);
+                    if (filename.indexOf('\\') === 0 || filename.indexOf('/')){
+                        filename = filename.substring(1);
+                    }
+                    file_label.textContent = filename;
+                }
+            })
+        })
+    </script>
+    <script src="{% static 'blog_site/js/ArticleCreateForm.js' %}"></script>
+{% endblock %}

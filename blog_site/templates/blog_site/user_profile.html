@@ -1,0 +1,95 @@
+{% extends 'blog_site/base.html' %}
+{% load static %}
+
+{% block assets %}
+    <link rel="stylesheet" href="{% static 'css/blog-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile_section.css' %}">
+{% endblock %}
+
+
+
+{% block style %}
+    <style>
+    .nav-border {
+        padding-bottom: 0px;
+    }
+    .blog-thumbnail .overlay {
+    /* width: 100%; */
+    /* height: 100%; */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%);
+    background-color: transparent;
+    transition: all 5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 20px;
+}
+    </style>
+{% endblock %}
+
+
+
+{% block content %}
+    <div id="profile-section">
+        <div class="profile-background">
+        </div>
+        <div class="profile_pic_container">
+            <img src="{{ profile.profile_pic.url }}" alt="" class="avatar">
+        </div>
+        <div>
+            <div class="info-container">
+            <div class="grid-container ">
+                <div class="grid-x text-center">
+                    <div class="cell small-12">
+                       <h3 class="profile_username">{{ profile.user.username }}</h3>
+                    </div>
+                    <div class="cell small-12">
+                        <p class="profile_user_bio">
+                            {{ profile.bio }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="" id="blog-section">
+        <div class="grid-container blog-container">
+            <div class="grid-margin-x grid-x medium-up-2">
+                {% for article in articles %}
+                        <div class="cell small-12 large-6">
+                        <div class="blog-thumbnail">
+                            <div class="blog-thumbnail-background"
+                                 style="background: url('{{  article.header_image.url }}');background-size: cover;">
+                                <div class="overlay-link" data-url="{% url 'update-article' article.pk %}">
+                                    <div class="overlay">
+                                        <div class="thumbnail-info">
+                                            {% for tag in article.tags.all %}
+                                                    <a class="button blog-tag" href="#">{{ tag.name }}</a>
+                                            {% endfor %}
+                                            <p class="blog-heading">{{ article.main_title }}</p>
+                                            <p class="blog-date">{{ article.date|date:"d M, Y" }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+            $(function(){
+            let overlay_link = $('.overlay-link');
+            overlay_link.on('click', function(){
+                window.location.replace($(this).attr('data-url'))
+            })
+        })
+    </script>
+{% endblock %}

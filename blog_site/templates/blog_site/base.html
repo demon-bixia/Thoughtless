@@ -1,0 +1,188 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vengeance</title>
+    <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/webfonts/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hamburgers-master/dist/hamburgers.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/navigation-menu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/title-bar.css' %}">
+    {% block assets %}
+
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link href="{% static 'css/form-section.css' %}" rel="stylesheet">
+    <style>
+        html.sr .load_hidden {
+        visibility: hidden;
+        }
+        body {
+        background: #f5f7f9;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+    </style>
+    {% block style %}
+
+    {% endblock %}
+</head>
+<body>
+<div class="off-canvas-wrapper">
+    <div class="off-canvas position-right" id="OffCanvas" data-off-canvas>
+
+        <ul class="vertical menu accordion-menu" data-accordion-menu id="off-canvas-menu">
+            <li>
+                <a href="#">registration</a>
+                <ul class="menu vertical nested">
+                    <li><a href="{% url 'register-view' %}" >Signup <i class="fa fa-user"></i></a></li>
+                    <li><a href="{% url 'login-view' %}">login <i class="fa fa-lock"></i></a></li>
+                </ul>
+            </li>
+            <li><a href="#">Articles</a>
+                <ul class="menu vertical nested">
+                    <li><a href="{% url 'articles' %}" >Featured</a></li>
+                    <li><a href="{% url 'articles-mode' filter_mode='All' %}">All</a></li>
+                </ul>
+            </li>
+            {% if request.user.is_authenticated %}
+                 <li><a href="{% url 'profile-page' pk=request.user.profile.pk%}">Profile</a></li>
+                <li><a href="{% url 'create-article' %}">Create An Article</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="off-canvas-content" data-off-canvas-content>
+        <div class="small-bar-border hide-for-medium">
+            <div class="title-bar" id="small-bar" data-hide-for="medium">
+                <div class="title-bar-left">
+                    <div class="title-bar-title"><i>VENGEANCE</i></div>
+                </div>
+                <div class="title-bar-right">
+                    <button class="hamburger hamburger--emphatic " type="button" id="menu-icon" data-toggle="OffCanvas">
+                              <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                              </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-border">
+            <div class="top-bar hide-for-small-only" id="nav-bar">
+                <div class="top-bar-left">
+                    <ul class="menu" id="nav-logo">
+                        <li class="menu-text logo"><i>Vengeance</i></li>
+                    </ul>
+                </div>
+                <div class="top-bar-right ">
+                    <ul class="dropdown menu icons icon-left " data-dropdown-menu id="nav-menu">
+                        {% if not user.is_authenticated %}
+                            <li><a href="{% url 'login-view' %}" class="button">Login</a></li>
+                            <li><a href="{% url 'register-view' %}" class="button">register</a></li>
+                        {% else %}
+                            <li><a href="{% url 'profile-page' pk=request.user.profile.pk%}">Profile</a></li>
+                            <li><a href="{% url 'articles' %}">Featured</a></li>
+                            <li><a href="{% url 'create-article' %}">Create An Article</a></li>
+                            <li><a href="{% url 'articles-mode' filter_mode='All' %}">Articles</a></li>
+                            <li><a href="{% url 'logout-view' %}" class="button">logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+<div class="" id="footer-section">
+    <div class="grid-container" id="footer-container">
+        <div class="grid-y">
+            <div class="cell small-11">
+                <div class="grid-x large-up-5 grid-margin-x footer-top">
+                    <div class="cell">
+                        Product
+                        <ul class="menu vertical footer-links">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="cell">
+                        Company
+                        <ul class="menu vertical footer-links">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="cell">
+                        Resources
+                        <ul class="menu vertical footer-links">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="cell">
+                        Contact
+                        <ul class="menu vertical footer-links">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="cell" style="font-size: 28px;font-weight: 600;font-style: italic;">
+                        Vengeance
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-1">
+                <div class="grid-x grid-margin-x large-up-3">
+
+                    <div class="cell copy-right">
+                        <small>&copy; Vengeance</small>
+                    </div>
+                    <div class="cell hide-for-medium-only hide-for-small-only"></div>
+                    <div class="cell hide-for-medium-only hide-for-small-onl"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-section">
+    <div class="reveal" data-reveal id="Modal" style="border:0;">
+    </div>
+</div>
+</div>
+</div>
+<!-- JScript -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/foundation.min.js' %}"></script>
+<!--suppress JSJQueryEfficiency -->
+<script>
+    $(function () {
+        $(document).foundation();
+        $("#menu-icon").click(function () {
+            $(this).addClass('is-active');
+        });
+        $("#OffCanvas").on('closed.zf.offcanvas', function () {
+            $('#menu-icon').removeClass('is-active');
+        });
+
+        $(window).scroll(function () {
+        if (pageYOffset >= 90) {
+            $('#small-bar').addClass('shadow-on');
+        } else {
+            $('#small-bar').removeClass('shadow-on');
+        }
+    });
+    });
+</script>
+{% block javascript %}
+    <script src="{% static 'js/navigation-menu.js' %}"></script>
+{% endblock %}
+</body>
+</html>
