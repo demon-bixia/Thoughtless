@@ -1,0 +1,137 @@
+{% extends 'blog_site/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block assets %}
+    <link href="{% static 'css/form-section.css' %}" rel="stylesheet">
+{% endblock %}
+{% block style %}
+    <style>
+    body{
+        background: white;
+    }
+    #form .error{
+        border:1px solid;
+        border-color: #b60008;
+        background: white;
+    }
+    #form .error:focus{
+        border-color: #f11914;
+    }
+    #form .form-input{
+        margin-bottom: 0;
+    }
+    #form .cell{
+        margin-bottom: 16px;
+    }
+    #form .error-text {
+        color: #f11914;
+    }
+    #form-section{
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    #footer-container{
+        border-top: 1px solid #ecedf2;
+    }
+   #form .alert-danger{
+        background: rgba(204, 0, 0, 0.17);
+    }
+    #form .alert-success{
+        background: rgba(0, 200, 81, 0.17);
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="form-section">
+        <div class="form-container grid-container">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-12 medium-3">
+                    <h3 class="from-intro">Gain access to your account</h3>
+                </div>
+                <div class="cell small-12 medium-9">
+                    <form action="" id="form" method="post">
+                        {% csrf_token %}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
+                    {% if form.non_field_errors %}
+                        <div class="callout alert-danger" style="padding:5px;color: rgb(0,0,0);border:1px solid rgba(255,255,255,0.97)" data-closable>
+                            <p>{{ form.non_field_errors }}</p>
+                            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                  {% if messages %}
+                        {% for message in messages %}
+                            <div class="callout alert-{{ message.tags }}" style="padding:5px;color: rgb(0,0,0);border:1px solid rgba(255,255,255,0.97)" data-closable>
+                            <p>{{ message }}</p>
+                            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                        <div class="grid-x grid-margin-x">
+                            <!-- form-1 -->
+                                    <div class="cell small-12 medium-6">
+                                        {% if form.username.errors %}
+                                            <input type="text" class="form-input error" name="username" required autofocus
+                                                   id="id_username" placeholder="email">
+                                            {% for error in form.username.errors %}
+                                                    <small class="error-text">{{ error }}</small>
+                                            {% endfor %}
+                                        {% else %}
+                                            <input type="text"  class="form-input" name="username" required autofocus
+                                               id="id_username" placeholder="email">
+                                                <small class="error-text">{{ error }}</small>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell small-12 medium-6">
+                                        {% if form.password.errors %}
+                                        <input type="password" class="form-input error" name="password" required autofocus
+                                               id="id_password" placeholder="password">
+                                            {% for error in form.password.errors %}
+                                                    <small class="error-text">{{ error }}</small>
+                                            {% endfor %}
+                                        {% else %}
+                                        <input type="password" class="form-input" name="password" required autofocus
+                                               id="id_password" placeholder="password">
+                                        <small class="error-text"></small>
+                                        {% endif %}
+                                    </div>
+                            <!-- submit button-->
+                            <div class="cell small-12 submit-button">
+                                <button class="button" type="submit">login</button>
+                            </div>
+                            <div class="cell small-12 medium-6">
+                                <small class="subheader"> forgot about your password ? <a href="{% url 'password_reset' %}">password reset</a></small>
+                                <br>
+                                <small class="subheader">don't have an account ? <a href="{% url 'register-view' %}">login</a></small>
+                            </div>
+                           <div class="cell small-12 medium-6">
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let error = document.querySelectorAll('#form .error');
+            error.forEach(function(value){
+                value.addEventListener('input', function(){
+                    this.classList.remove('error')
+                })
+            });
+        })
+    </script>
+    <script src="{% static 'js/login-validation.js' %}"></script>
+{% endblock %}
