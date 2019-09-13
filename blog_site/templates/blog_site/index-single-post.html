@@ -130,7 +130,8 @@
                                                  {% if reply.author.pk == profile.pk %}
                                                    <small><a href="{% url 'update-reply' pk=reply.pk %}" class="js-update-reply" data-reply="{{ reply.pk }}">edit/</a></small>
                                                    <small> <a href="{% url 'delete-reply' pk=reply.pk %}" class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
-                                                {% endif %}
+                                                {% endif
+                                                   %}
                                                 </p>
                                                 <div class="reply-content">
                                                     <p>{{ reply.text }}</p>

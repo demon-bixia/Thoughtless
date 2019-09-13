@@ -5,7 +5,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # noinspection SpellCheckingInspection
 SECRET_KEY = 'b-4-%_mt&x)7wrfd+z!^d8_+sbqvz%ah^lp34xi2)!4w@pyiro'
-#SECRET_KEY = os.environ.get('SECRET_KEY')
+
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 

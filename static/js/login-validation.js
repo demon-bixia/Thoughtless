@@ -12,7 +12,6 @@ $(function(){
              error.html("")
              }
          }
-
     });
 
     password.on("input", function(){

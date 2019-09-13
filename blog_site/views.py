@@ -1,20 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import View
-from .models import Article, Paragraph, Comment, Reply
-from django.core.paginator import Paginator
 from .forms import ArticleCreateForm, CommentForm, ReplyForm
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from accounts.models import Profile
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from .models import Article, Paragraph, Comment, Reply
+from django.utils.decorators import method_decorator
+from django.template.loader import render_to_string
+from django.core.paginator import Paginator
+from django.views.generic import View
+from django.http import JsonResponse
+from accounts.models import Profile
 
 
 # noinspection PyMethodMayBeStatic
 # the Article list view only accept get requests
 # filters the articles query set and returns a paginated
 # article list
-class Articles(View):
+class Articles(View):   
     filter_content = "featured"
     template_name = "blog_site/index-no-grid.html"
     p_queryset = None
