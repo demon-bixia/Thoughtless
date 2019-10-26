@@ -1,10 +1,10 @@
 {% extends 'blog_site/base.html' %}
 {% load static %}
-{% block  assets%}
+{% block  assets %}
     <!--suppress CssUnknownTarget -->
-    <link href="{% static 'css/grid-header.css' %}" rel="stylesheet">
-    <link href="{% static 'css/blog-grid.css' %}" rel="stylesheet">
-    <link href="{% static 'css/pagination.css' %}" rel="stylesheet">
+    <link href="{% static 'css/pages/grid-header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/pages/blog-grid.css' %}" rel="stylesheet">
+    <link href="{% static 'css/pages/pagination.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <div class="" id="header-section">
@@ -36,10 +36,10 @@
                     </button>
                     <div class="dropdown-pane filter-list" data-dropdown data-hover="false" data-hover-pane="true"
                          id="example-dropdown-1">
-                            <ul class="menu vertical">
-                                <li><a href="{% url 'articles' %}">Featured</a></li>
-                                <li><a href="{% url 'articles-mode' filter_mode="All" %}">All</a></li>
-                            </ul>
+                        <ul class="menu vertical">
+                            <li><a href="{% url 'articles' %}">Featured</a></li>
+                            <li><a href="{% url 'articles-mode' filter_mode="All" %}">All</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -52,12 +52,12 @@
                     <div class="cell small-12 large-6 load-hidden animate-1">
                         <div class="blog-thumbnail">
                             <div class="blog-thumbnail-background"
-                                 style="background: url('{{  article.header_image.url }}');background-size: cover;">
+                                 style="background: url('{{ article.header_image.url }}');background-size: cover;">
                                 <div class="overlay-link" data-url="{% url 'single-article' article.pk %}">
                                     <div class="overlay">
                                         <div class="thumbnail-info">
                                             {% for tag in article.tags.all %}
-                                                    <a class="button blog-tag" href="#">{{ tag.name }}</a>
+                                                <a class="button blog-tag" href="#">{{ tag.name }}</a>
                                             {% endfor %}
                                             <p class="blog-heading">{{ article.main_title }}</p>
                                             <p class="blog-date">{{ article.date|date:"d M, Y" }}</p>
@@ -74,31 +74,35 @@
     <div id="pagination-section">
         <div class="grid-x">
             <div class="cell small-12 pagination-cell">
-                  <nav aria-label="Pagination">
+                <nav aria-label="Pagination">
                     <ul class="pagination">
                         <!-- Previous Button -->
-                    {% if articles.has_previous %}
-                        <li class="ppb" style="margin-right: 50px"><a class="button" href="?page={{ articles.previous_page_number }}"><i
-                                class="fa fa-angle-left" style="color: black"></i></a></li>
-                    {% else %}
-                        <li class="ppb" style="margin-right: 50px"><a class="button"><i
-                                class="fa fa-angle-left" style="color: black"></i></a></li>
-                    {% endif %}
+                        {% if articles.has_previous %}
+                            <li class="ppb" style="margin-right: 50px"><a class="button"
+                                                                          href="?page={{ articles.previous_page_number }}"><i
+                                    class="fa fa-angle-left" style="color: black"></i></a></li>
+                        {% else %}
+                            <li class="ppb" style="margin-right: 50px"><a class="button"><i
+                                    class="fa fa-angle-left" style="color: black"></i></a></li>
+                        {% endif %}
                         {% for number in articles.paginator.num_pages|rjust:articles.paginator.num_pages %}
                             {% if forloop.counter ==  articles.number %}
-                                <li class="current"><span class="show-for-sr">You're on page</span>{{ forloop.counter }}</li>
+                                <li class="current"><span class="show-for-sr">You're on page</span>{{ forloop.counter }}
+                                </li>
                             {% else %}
-                                <li><a aria-label="Page {{ forloop.counter }}" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+                                <li><a aria-label="Page {{ forloop.counter }}"
+                                       href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
                             {% endif %}
                         {% endfor %}
                         <!-- Next Button -->
-                    {% if articles.has_next %}
-                        <li class="pnb"><a class="button" href="?page={{ articles.next_page_number }}"><i class="fa fa-angle-right"
-                                  style="color: black"></i></a></li>
-                    {% else %}
-                        <li class="pnb"><a class="button"><i class="fa fa-angle-right"
-                          style="color: black"></i></a></li>
-                    {% endif %}
+                        {% if articles.has_next %}
+                            <li class="pnb"><a class="button" href="?page={{ articles.next_page_number }}"><i
+                                    class="fa fa-angle-right"
+                                    style="color: black"></i></a></li>
+                        {% else %}
+                            <li class="pnb"><a class="button"><i class="fa fa-angle-right"
+                                                                 style="color: black"></i></a></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
@@ -106,13 +110,18 @@
     </div>
 {% endblock %}
 {% block javascript %}
-    <script src="{% static 'js/navigation-menu.js' %}"></script>
+    <script src="{% static 'js/apps/navigation-menu.js' %}"></script>
+    <script src="{% static 'js/vendor/scrollreveal.min.js' %}"></script>
+
     <script>
-    $(function(){
-        let overlay_link = $('.overlay-link');
-        overlay_link.on('click', function(){
-            window.location.replace($(this).attr('data-url'))
+        $(function () {
+
+            ScrollReveal().reveal('.animate-1', {"delay": 500});
+
+            let overlay_link = $('.overlay-link');
+            overlay_link.on('click', function () {
+                window.location.replace($(this).attr('data-url'))
+            })
         })
-    })
     </script>
 {% endblock %}

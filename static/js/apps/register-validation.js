@@ -4,6 +4,7 @@ $(function(){    let form = $("#form");
     let password = $("#id_password");
     let password_confirm = $("#id_password_confirm");
     let email = $("#id_email");
+
     username.on("input", function(){
         let error = $(this).siblings('.error-text');
         if ($(this).val() === ""){
@@ -24,7 +25,7 @@ $(function(){    let form = $("#form");
         }
         else{
          if (error.html() !== "") {
-             error.html("")
+             error.html("");
              }
          }
     });

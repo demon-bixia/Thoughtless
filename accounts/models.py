@@ -47,7 +47,7 @@ def save_profile_pic(instance, filename):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    profile_pic = models.ImageField(upload_to=save_profile_pic, default="imgs/limbi.png")
+    profile_pic = models.ImageField(upload_to=save_profile_pic, default="default/default.png")
     job = models.CharField(max_length=100)
     bio = models.TextField()
 

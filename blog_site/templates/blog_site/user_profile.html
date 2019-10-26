@@ -1,30 +1,22 @@
 {% extends 'blog_site/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block assets %}
-    <link rel="stylesheet" href="{% static 'css/blog-grid.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile_section.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/blog-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/profile_section.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/form-section.css' %}">
 {% endblock %}
 
 
 
 {% block style %}
     <style>
-    .nav-border {
-        padding-bottom: 0px;
-    }
-    .blog-thumbnail .overlay {
-    /* width: 100%; */
-    /* height: 100%; */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%);
-    background-color: transparent;
-    transition: all 5s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 20px;
-}
+
+        body {
+            background: #ffffff;
+        }
+
     </style>
 {% endblock %}
 
@@ -32,64 +24,148 @@
 
 {% block content %}
     <div id="profile-section">
-        <div class="profile-background">
-        </div>
-        <div class="profile_pic_container">
-            <img src="{{ profile.profile_pic.url }}" alt="" class="avatar">
-        </div>
-        <div>
-            <div class="info-container">
-            <div class="grid-container ">
-                <div class="grid-x text-center">
-                    <div class="cell small-12">
-                       <h3 class="profile_username">{{ profile.user.username }}</h3>
+        <form action="{% url 'profile-page' %}" method="post" id="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid-container">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell small-12 medium-4 avatar-section">
+                        <div class="avatar-wrapper">
+                            <h4>Avatar picture</h4>
+                            <img src="{{ profile.profile_pic.url }}" alt="avatar-image" class="avatar-image">
+                                <label for="profile_picture" class="button">Upload avatar</label>
+                        </div>
                     </div>
-                    <div class="cell small-12">
-                        <p class="profile_user_bio">
-                            {{ profile.bio }}
-                        </p>
+                    <div class="cell small-12 medium-8 info-section">
+                        <label class="input-label">Username: </label>
+                        {% if form.username.errors %}
+                            <div class="input-group">
+                                {# if errors existed #}
+                                {% render_field form.username class="form-input error" %}
+                                <span class="input-group-label error"><i class="fa fa-user"></i></span>
+                            </div>
+                            {% for error in form.username.errors %}
+                                <small class="error-text">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            <div class="input-group">
+                                {# if no errors #}
+                                {% render_field form.username class="form-input" %}
+                                <span class="input-group-label"><i class="fa fa-user"></i></span>
+                            </div>
+                        {% endif %}
+
+                        <label class="input-label">Job: </label>
+                        {% if form.job.errors %}
+                            <div class="input-group">
+                                {# if errors existed #}
+                                {% render_field form.job class="form-input error" %}
+                                <span class="input-group-label error"><i class="fa fa-briefcase"></i></span>
+                            </div>
+                            {% for error in form.job.errors %}
+                                <small class="error-text">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            <div class="input-group">
+                                {# if no errors #}
+                                {% render_field form.job class="form-input" %}
+                                <span class="input-group-label"><i class="fa fa-briefcase"></i></span>
+                            </div>
+                        {% endif %}
+
+                        <label class="input-label">Password: </label>
+                        {% if form.password.errors %}
+                            <div class="input-group">
+                                {# if errors existed #}
+                                {% render_field form.password class="form-input error" placeholder="New Password ?" %}
+                                <span class="input-group-label error"><i class="fa fa-lock"></i></span>
+                            </div>
+                            {% for error in form.password.errors %}
+                                <small class="error-text">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            <div class="input-group">
+                                {# if no errors #}
+                                {% render_field form.password class="form-input" placeholder="New Password ?" %}
+                                <span class="input-group-label"><i class="fa fa-lock"></i></span>
+                            </div>
+                        {% endif %}
+
+                        <label class="input-label">Password Confirm: </label>
+                        {% if form.password_confirm.errors %}
+                            {# if errors existed #}
+                            <div class="input-group">
+                                {% render_field form.password_confirm class="form-input error" placeholder="New Password ?" %}
+                                <span class="input-group-label error"><i class="fa fa-lock"></i></span>
+                            </div>
+                            {% for error in form.password_confirm.errors %}
+                                <small class="error-text">{{ error }}</small>
+                            {% endfor %}
+                        {% else %}
+                            <div class="input-group">
+                                {# if no errors #}
+                                {% render_field form.password_confirm class="form-input" placeholder="Confirm New Password" %}
+                                <span class="input-group-label"><i class="fa fa-lock"></i></span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    <div class="" id="blog-section">
-        <div class="grid-container blog-container">
-            <div class="grid-margin-x grid-x medium-up-2">
-                {% for article in articles %}
-                        <div class="cell small-12 large-6">
-                        <div class="blog-thumbnail">
-                            <div class="blog-thumbnail-background"
-                                 style="background: url('{{  article.header_image.url }}');background-size: cover;">
-                                <div class="overlay-link" data-url="{% url 'update-article' article.pk %}">
-                                    <div class="overlay">
-                                        <div class="thumbnail-info">
-                                            {% for tag in article.tags.all %}
-                                                    <a class="button blog-tag" href="#">{{ tag.name }}</a>
-                                            {% endfor %}
-                                            <p class="blog-heading">{{ article.main_title }}</p>
-                                            <p class="blog-date">{{ article.date|date:"d M, Y" }}</p>
-                                        </div>
-                                    </div>
+                <div class="grid-x grid-margin-x bio-section">
+                    <div class="bio-wrapper">
+                        <ul class="tabs" data-tabs id="collapsing-tabs">
+                            <li class="tabs-title is-active"><a href="#bio-tab" aria-selected="true">Bio</a></li>
+                            <li class="tabs-title"><a href="#articles-tab">Articles</a></li>
+                        </ul>
+
+                        <div class="tabs-content" data-tabs-content="collapsing-tabs">
+                            <div class="tabs-panel is-active" id="bio-tab">
+                                {% if form.bio.errors %}
+                                    {% render_field form.bio class="form-input error" cols="10" rows="10" %}
+                                    {% for error in form.bio.errors %}
+                                        <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                {% else %}
+                                    {% render_field form.bio class="form-input" cols="10" rows="10" %}
+                                {% endif %}
+
+                                <div class="submit-button">
+                                    <button type="submit" class="button">Submit</button>
                                 </div>
+                            </div>
+                            <div class="tabs-panel" id="articles-tab">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th width="150">Title</th>
+                                        <th width="150">Date posted</th>
+                                        <th width="150">Number of paragraph</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for article in articles %}
+                                        <tr>
+                                            <td>
+                                                <a href="{% url 'update-article' article.pk %}">{{ article.main_title }}</a>
+                                            </td>
+                                            <td>{{ article.date|date:"D M, Y" }}</td>
+                                            <td>{{ article.paragraph_set.count }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        </div>
+        </form>
+        <form action="{% url 'profile-pic-update' %}" method="post" id="profile_pic_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% render_field profile_pic_form.profile_pic id="profile_picture" class="show-for-sr" %}
+        </form>
     </div>
 {% endblock %}
 
 
 {% block javascript %}
-    <script>
-            $(function(){
-            let overlay_link = $('.overlay-link');
-            overlay_link.on('click', function(){
-                window.location.replace($(this).attr('data-url'))
-            })
-        })
-    </script>
+    <script src="{% static 'js/apps/profile.js' %}"></script>
 {% endblock %}

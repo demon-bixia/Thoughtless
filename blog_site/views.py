@@ -1,48 +1,56 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ArticleCreateForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
-from .models import Article, Paragraph, Comment, Reply
-from django.utils.decorators import method_decorator
-from django.template.loader import render_to_string
 from django.core.paginator import Paginator
-from django.views.generic import View
 from django.http import JsonResponse
-from accounts.models import Profile
+from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
+from django.utils.decorators import method_decorator
+from django.views.generic import View
+
+from accounts.forms import ProfileUpdateForm, ProfilePicUpdateForm
+from .forms import ArticleCreateForm, CommentForm, ReplyForm
+from .models import Article, Paragraph, Comment, Reply
 
 
 # noinspection PyMethodMayBeStatic
 # the Article list view only accept get requests
 # filters the articles query set and returns a paginated
 # article list
-class Articles(View):   
-    filter_content = "featured"
+class Articles(View):
+    filter_content = "Featured"
     template_name = "blog_site/index-no-grid.html"
     p_queryset = None
 
     def get(self, request, filter_mode=None):
         if filter_mode:
             self.filter_content = filter_mode
-        article_list = self.get_articles()
-        paginator = self.pagination(article_list)
-        page = request.GET.get('page')
-        self.p_queryset = paginator.get_page(page)
+
+        article_list = self.get_articles()  # get all Articles
+        paginator = self.pagination(article_list)  # create a paginator for articles querySet
+        page = request.GET.get('page')  # get current page from request
+        self.p_queryset = paginator.get_page(page)  # get paginated queryset according to current page
+
         context = self.get_context_data()
-        context['pre_url'] = request.META.get('HTTP_REFER')
+        context['pre_url'] = request.META.get('HTTP_REFER')  # get the pre url
+
         if self.filter_content == "All":
             self.template_name = "blog_site/index-grid.html"
+        elif self.filter_content == "Featured":
+            self.template_name = "blog_site/index-no-grid.html"
+
         return render(request, self.template_name, context)
 
     # returns the query set for the Article
     def get_articles(self):
-        if self.filter_content == "featured":
+        if self.filter_content == "Featured":
             articles = Article.objects.filter(featured=True).order_by('-date')
         else:
             articles = Article.objects.order_by('-date')
         return articles
 
     # returns the paginated articles list
+
     def pagination(self, queryset):
-        if self.filter_content == "featured":
+        if self.filter_content == "Featured":
             paginator = Paginator(queryset, 3)
         else:
             paginator = Paginator(queryset, 5)
@@ -111,7 +119,6 @@ class CreateArticleView(View):
         return self.context
 
 
-@method_decorator(login_required, name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class ArticleUpdate(View):
     form_class = ArticleCreateForm
@@ -347,8 +354,53 @@ class ReplyDelete(View):
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     template_name = "blog_site/user_profile.html"
+    form_class = ProfileUpdateForm
+    profile_form_class = ProfilePicUpdateForm
 
-    def get(self, request, pk):
-        profile = get_object_or_404(Profile, pk=pk)
+    def get(self, request):
+        profile = request.user.profile
         articles = Article.objects.filter(author=profile)
-        return render(request, self.template_name, {"profile": profile, "articles": articles})
+
+        form = ProfileUpdateForm(initial={
+            "username": request.user.username,
+            "email": request.user.email,
+            "job": profile.job,
+            "bio": profile.bio,
+        })
+        profile_pic_form = self.profile_form_class()
+
+        context = {"form": form, "profile_pic_form": profile_pic_form, "profile": profile, "articles": articles}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        user = request.user
+        profile = request.user.profile
+        articles = Article.objects.filter(author=profile)
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.cleaned_data.get("username"):
+                user.username = form.cleaned_data['username']
+            if form.cleaned_data.get('job'):
+                profile.job = form.cleaned_data['job']
+            if form.cleaned_data.get('password'):
+                user.set_password(form.cleaned_data['password'])
+            if form.cleaned_data.get('bio'):
+                user.profile.bio = form.cleaned_data['bio']
+            user.save()
+            profile.save()
+        else:
+            context = {"form": form, "profile": profile, "articles": articles}
+            return render(request, self.template_name, context)
+        return redirect('profile-page')
+
+
+@method_decorator(login_required, name='dispatch')
+class ProfilePicUpdateView(View):
+    form_class = ProfilePicUpdateForm
+
+    def post(self, request):
+        form = self.form_class(files=request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+        return redirect('profile-page')

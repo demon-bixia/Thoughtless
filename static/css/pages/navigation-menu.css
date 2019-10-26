@@ -3,6 +3,7 @@
     border-bottom: 1px solid #ecedf2;
     background: white;
     padding: 0 180px;
+    top:0;
     position: fixed;
     width: 100%;
     transition: all 0.3s ease;
@@ -82,6 +83,7 @@
         height: 80px;
         border-bottom: 1px solid #ecedf2;
         background: white;
+        top:0;
         padding: 0 0;
         width: 100%;
         transition: all 0.3s ease;
