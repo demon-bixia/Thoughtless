@@ -1,5 +1,5 @@
 import os
-import django_heroku
+# import django_heroku
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -11,7 +11,7 @@ SECRET_KEY = 'b-4-%_mt&x)7wrfd+z!^d8_+sbqvz%ah^lp34xi2)!4w@pyiro'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'intense-everglades-14440.herokuapp.com',
+  # 'intense-everglades-14440.herokuapp.com',
 ]
 
 INSTALLED_APPS = [
@@ -34,7 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'blog.urls'
@@ -94,15 +94,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
-STATIC_TMP = os.path.join(BASE_DIR, 'static')
+# STATIC_TMP = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-os.makedirs(STATIC_TMP, exist_ok=True)
+# os.makedirs(STATIC_TMP, exist_ok=True)
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -120,8 +120,8 @@ EMAIL_USE_TLS = True
 
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'mohslahmed100@gmail.com'
+EMAIL_HOST_USER = os.environ.get('USER_EMAIL')
 
-EMAIL_HOST_PASSWORD = 'pawergot90'
+EMAIL_HOST_PASSWORD = os.environ.get('USER_PASSWORD')
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
