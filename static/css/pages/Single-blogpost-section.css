@@ -99,6 +99,19 @@
     margin: 30px 0;
 }
 
+
+.post-content .author {
+    color: #1779ba;
+    outline: none;
+}
+
+
+.post-content .author:focus {
+    outline: none;
+    border: none;
+}
+
+
 .post-content a:hover {
     color: #000000;
     transition: all 0.3s ease;
@@ -128,6 +141,14 @@
 .reply-container {
     margin-top: 20px;
     margin-left: 100px;
+}
+.comment-section{
+    margin-bottom: 16px;
+
+}
+
+.comment-form-section{
+    margin-bottom: 0;
 }
 
 #comment-form {
@@ -191,7 +212,57 @@
     font-weight: 300;
 }
 
+/* modal comment */
+#Modal {
+    border-radius: 5px;
+}
+
+#Modal h3{
+    color: #666;
+}
+
+#Modal .form-input {
+    font-family: "Yu Gothic UI", sans-serif;
+    outline-color: transparent;
+    margin-top: 5px;
+    font-size: .8rem;
+    text-transform: none;
+    font-weight: normal;
+    letter-spacing: 0.1rem;
+    color: #666;
+    border-radius: .1rem;
+    background-color: #fafbfc;
+    border: 1px solid #ecedf2;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+
+#Modal .form-input:focus{
+    background-color: #fff;
+    border-color: #6773f1;
+    box-shadow: none;
+    color: #6773f1;
+}
+
+#Modal .submit-button button {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    font-size: 1rem !important;
+    border-radius: .3rem !important;
+    background-color: #2fca74;
+    border-color: #2fca74;
+}
+
 @media screen and (max-width: 638px) {
+    #Modal{
+        border-radius: 0;
+    }
     .blog-container {
         padding: 0 0;
     }

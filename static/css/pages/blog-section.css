@@ -119,6 +119,23 @@
     background: rgb(236, 237, 242);
 }
 
+.post-content .author{
+    color: #1779ba;
+    outline: none;
+}
+
+
+.post-content .author:focus {
+    outline: none;
+    border: none;
+}
+
+.post-content .author:active {
+    outline: none;
+    border: none;
+}
+
+
 .post-content .avatar {
     border-radius: 50%;
     width: 90px;

@@ -6,6 +6,11 @@
 {% endblock %}
 {% block style %}
     <style>
+        #footer-section {
+            border-top: 1px solid #ecedf2;
+            display: none;
+        }
+
         body {
             background: white;
         }
@@ -33,6 +38,11 @@
         }
 
         #form-section {
+            width: 100%;
+            height: calc(100vh - 100px );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
             padding-top: 50px;
             padding-bottom: 50px;
         }

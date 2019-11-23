@@ -1,18 +1,20 @@
 <div class="grid-x" id="reply_{{ reply.pk }}">
-<div class="cell small-2 avatar-cell">
-<img alt="" class="avatar" src="{{ reply.author.profile_pic.url }}">
-</div>
-<div class="cell auto">
-<p><a href="#" style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
-<p>
-<small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
-{% if reply.author.pk == profile.pk %}
-<small><a href="{% url 'update-reply' pk=reply.pk %}" class="js-update-reply" data-reply="{{ reply.pk }}">edit/</a></small>
-<small> <a href="{% url 'delete-reply' pk=reply.pk %}" class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
-{% endif %}
-</p>
-<div class="reply-content">
-<p>{{ reply.text }}</p>
-</div>
-</div>
+    <div class="cell small-2 avatar-cell">
+        <img alt="" class="avatar" src="{{ reply.author.profile_pic.url }}">
+    </div>
+    <div class="cell auto">
+        <p><a href="#" style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
+        <p>
+            <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
+            {% if reply.author.pk == profile.pk %}
+                <small><a href="{% url 'update-reply' pk=reply.pk %}" data-url="{% url 'update-reply' pk=reply.pk %}"
+                          class="js-update-reply" data-reply="{{ reply.pk }}">edit/</a></small>
+                <small> <a href="{% url 'delete-reply' pk=reply.pk %}" data-url="{% url 'delete-reply' pk=reply.pk %}"
+                           class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
+            {% endif %}
+        </p>
+        <div class="reply-content">
+            <p>{{ reply.text }}</p>
+        </div>
+    </div>
 </div>

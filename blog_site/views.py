@@ -145,7 +145,7 @@ class ArticleUpdate(View):
             if new_count > o_count:
                 self.create_paragraphs(request, article, o_count)
             self.update_paragraphs(request, article)
-            return redirect('articles-mode', filter_mode="All")
+            return redirect('profile-page')
         else:
             self.context['form'] = form
             self.context['count'] = article.paragraph_set.count()
@@ -190,7 +190,7 @@ class ArticleDelete(View):
 @method_decorator(login_required, name='dispatch')
 class CommentCreate(View):
     data = dict()
-    template_name = "blog_site/part/comment_partial.html"
+    template_name = "blog_site/part/comment_reply_partial.html"
 
     def post(self, request, article_pk):
         comment_text = request.POST.get("text")
@@ -233,6 +233,7 @@ class CommentUpdate(View):
             html_content = render_to_string(self.template_name, {"comment": comment, 'profile': request.user.profile})
             self.data['successful'] = True
             self.data['html_content'] = html_content
+            self.data['pk'] = pk
             return JsonResponse(self.data)
         else:
             self.data['successful'] = False
@@ -251,6 +252,7 @@ class CommentDelete(View):
             comment.delete()
             self.data['successful'] = True
             self.data['message'] = "Comment Deleted"
+            self.data['pk'] = pk
         except Comment.DoesNotExist:
             self.data['successful'] = False
             self.data['message'] = "comment not found"
@@ -269,6 +271,7 @@ class ReplyCreate(View):
         try:
             comment = Comment.objects.get(pk=comment_pk)
             html_form = render_to_string(self.form_template, {'form': form, 'comment': comment}, request=request)
+            self.data['html_form'] = html_form
             self.data['html_form'] = html_form
             self.data['successful'] = True
         except Comment.DoesNotExist:
@@ -289,6 +292,7 @@ class ReplyCreate(View):
                 self.data['html_content'] = render_to_string(self.template_name, {'reply': reply,
                                                                                   'profile': request.user.profile
                                                                                   }, request=request)
+                self.data['pk'] = comment_pk
             except Comment.DoesNotExist:
                 self.data['successful'] = False
         else:
@@ -325,6 +329,7 @@ class ReplyUpdate(View):
                 self.data['html_content'] = render_to_string(self.template_name, {"reply": reply,
                                                                                   'profile': request.user.profile},
                                                              request=request)
+                self.data['pk'] = pk
             else:
                 self.data['successful'] = False
                 self.data['html_form'] = render_to_string(self.form_template, {'form': form, 'reply': reply},
@@ -345,6 +350,7 @@ class ReplyDelete(View):
             reply.delete()
             self.data['successful'] = True
             self.data['message'] = "Comment Deleted"
+            self.data['pk'] = pk
         except Reply.DoesNotExist:
             self.data['successful'] = False
             self.data['message'] = "comment not found"

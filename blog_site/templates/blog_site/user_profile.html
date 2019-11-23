@@ -17,6 +17,10 @@
             background: #ffffff;
         }
 
+        #footer-container {
+            display: none;
+        }
+
     </style>
 {% endblock %}
 
@@ -32,7 +36,7 @@
                         <div class="avatar-wrapper">
                             <h4>Avatar picture</h4>
                             <img src="{{ profile.profile_pic.url }}" alt="avatar-image" class="avatar-image">
-                                <label for="profile_picture" class="button">Upload avatar</label>
+                            <label for="profile_picture" class="button">Upload avatar</label>
                         </div>
                     </div>
                     <div class="cell small-12 medium-8 info-section">

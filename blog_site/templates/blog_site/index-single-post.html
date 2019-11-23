@@ -6,11 +6,13 @@
     <link href="{% static 'css/pages/header.css' %}" rel="stylesheet">
     <link href="{% static 'css/pages/Single-blogpost-section.css' %}" rel="stylesheet">
     <link href="{% static 'css/pages/pagination.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/pages/UserModal.css' %}">
 {% endblock %}
 {% block style %}
     <style>
         #footer-container {
             border-top: 1px solid #ecedf2;
+            display: none;
         }
     </style>
 {% endblock %}
@@ -91,76 +93,19 @@
                                     {% endif %}
                                 </div>
                                 <div class="cell auto">
-                                    <p>by <a href="#">{{ article.author.user.username }}</a></p>
+                                    <p>by
+                                        <button data-open="{{ article.author.user.pk }}_profile_modal" class="author">
+                                            {{ article.author.user.username }}</button>
+                                    </p>
                                     <p>{{ article.author.job }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card" style="width:100%;margin-top:0;margin-bottom:0;">
-                        <div class="card-section post-content" id="comment_container">
-                            <h3 style="font-family: 'Yu Gothic UI', sans-serif;font-weight: 300;margin-bottom: 50px;margin-top: 50px"
-                                id="comment_counter" data-count="{{ article.comment_set.count }}">
-                                {{ article.comment_set.count }} Comments</h3>
-                            <br>
-                            {% for comment in article.comment_set.all %}
-                                <div class="grid-x" id="comment_{{ comment.pk }}">
-                                    <div class="cell small-2 avatar-cell">
-                                        <img alt="" class="avatar" src="{{ comment.author.profile_pic.url }}">
-                                    </div>
-                                    <div class="cell auto">
-                                        <p>
-                                            <a href="#" style="color: rgb(0,0,0)">{{ comment.author.user.username }}</a>
-                                        </p>
-                                        <p>
-                                            <small><span>{{ comment.date|date:"d M, Y" }}/ </span>
-                                                <a href="{% url 'create-reply' comment_pk=comment.pk %}"
-                                                   class="js-reply_to_comment"
-                                                   data-comment="{{ comment.pk }}">Reply/</a></small>
-                                            {% if comment.author.pk == profile.pk %}
-                                                <small><a href="{% url 'update-comment' pk=comment.pk %}"
-                                                          class="js-update-comment">edit/</a> </small>
-                                                <small><a href="{% url 'delete-comment' pk=comment.pk %}"
-                                                          class="js-delete-comment" data-comment="{{ comment.pk }}">delete/</a></small>
-                                            {% endif %}
-                                        </p>
-                                        <p>{{ comment.text }}</p>
-                                    </div>
-                                </div>
-                                <div class="reply-container reply-container_{{ comment.pk }}">
-                                    {% for reply in comment.reply_set.all %}
-                                        <div class="grid-x" id="reply_{{ reply.pk }}">
-                                            <div class="cell small-2 avatar-cell">
-                                                <img alt="" class="avatar" src="{{ reply.author.profile_pic.url }}">
-                                            </div>
-                                            <div class="cell auto">
-                                                <p><a href="#"
-                                                      style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
-                                                <p>
-                                                    <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
-                                                    {% if reply.author.pk == profile.pk %}
-                                                        <small><a href="{% url 'update-reply' pk=reply.pk %}"
-                                                                  class="js-update-reply" data-reply="{{ reply.pk }}">edit/</a></small>
-                                                        <small> <a href="{% url 'delete-reply' pk=reply.pk %}"
-                                                                   class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
-                                                    {% endif %}
-                                                </p>
-                                                <div class="reply-content">
-                                                    <p>{{ reply.text }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <br>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="card" style="width:100%;margin-top: 0;">
+                    <div class="card comment-form-section" style="width:100%;margin-top: 0;">
                         <div class="card-section post-content">
                             <form action="{% url 'create-comment' article_pk=article.pk %}" id="comment-form"
-                                  method="post">
+                                  method="post" data-url="{% url 'create-comment' article_pk=article.pk %}">
                                 {% csrf_token %}
                                 <div class="grid-x">
                                     <div class="cell">
@@ -180,9 +125,88 @@
                             </form>
                         </div>
                     </div>
+                    <div class="card comment-section" style="width:100%;margin-top:0;margin-bottom:0;">
+                        <div class="card-section post-content" id="comment_container">
+                            <h3 style="font-family: 'Yu Gothic UI', sans-serif;font-weight: 300;margin-bottom: 50px;margin-top: 50px"
+                                id="comment_counter" data-count="{{ article.comment_set.count }}">
+                                {{ article.comment_set.count }} Comments</h3>
+                            <br>
+                            {% for comment in article.comment_set.all %}
+                                <div class="grid-x comment"  id="comment_{{ comment.pk }}">
+                                    <div class="cell small-2 avatar-cell">
+                                        <img alt="" class="avatar" src="{{ comment.author.profile_pic.url }}">
+                                    </div>
+                                    <div class="cell auto">
+                                        <p>
+                                            <a href="#" style="color: rgb(0,0,0)">{{ comment.author.user.username }}</a>
+                                        </p>
+                                        <p>
+                                            <small><span>{{ comment.date|date:"d M, Y" }}/ </span>
+                                                <a href="{% url 'create-reply' comment_pk=comment.pk %}"
+                                                   data-url="{% url 'create-reply' comment_pk=comment.pk %}" class="js-reply-to-comment"
+                                                   data-comment="{{ comment.pk }}">Reply/</a></small>
+                                            {% if comment.author.pk == profile.pk %}
+                                                <small><a href="{% url 'update-comment' pk=comment.pk %}"
+                                                          class="js-update-comment" data-url="{% url 'update-comment' pk=comment.pk %}" >edit/</a> </small>
+                                                <small><a href="{% url 'delete-comment' pk=comment.pk %}"
+                                                          data-url="{% url 'delete-comment' pk=comment.pk %}" class="js-delete-comment" data-comment="{{ comment.pk }}">delete/</a></small>
+                                            {% endif %}
+                                        </p>
+                                        <p>{{ comment.text }}</p>
+                                    </div>
+                                </div>
+                                <div class="reply-container reply-container_{{ comment.pk }}">
+                                    {% for reply in comment.reply_set.all %}
+                                        <div class="grid-x" id="reply_{{ reply.pk }}">
+                                            <div class="cell small-2 avatar-cell">
+                                                <img alt="" class="avatar" src="{{ reply.author.profile_pic.url }}">
+                                            </div>
+                                            <div class="cell auto">
+                                                <p><a href="#"
+                                                      style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
+                                                <p>
+                                                    <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
+                                                    {% if reply.author.pk == profile.pk %}
+                                                        <small><a href="{% url 'update-reply' pk=reply.pk %}"
+                                                                  class="js-update-reply" data-reply="{{ reply.pk }}"
+                                                                  data-url="{% url 'update-reply' pk=reply.pk %}">edit/</a></small>
+                                                        <small> <a href="{% url 'delete-reply' pk=reply.pk %}"
+                                                                   data-url="{% url 'delete-reply' pk=reply.pk %}"
+                                                                   class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
+                                                    {% endif %}
+                                                </p>
+                                                <div class="reply-content">
+                                                    <p>{{ reply.text }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="reveal profileModal" id="{{ article.author.user.pk }}_profile_modal" data-reveal>
+        <div class="modal-avatar-section">
+            <img src="{{ article.author.profile_pic.url }}" alt="">
+            <h3>{{ article.author.user.username }}</h3>
+        </div>
+        <div class="modal-info-section">
+            <!-- Bio-->
+            <small>Bio</small>
+            <p>{{ article.author.bio }}.</p>
+
+
+            <!--Job-->
+            <small>Job</small>
+            <p>{{ article.author.job }}</p>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 {% endblock %}
 

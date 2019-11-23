@@ -6,6 +6,13 @@
     <link href="{% static 'css/pages/blog-grid.css' %}" rel="stylesheet">
     <link href="{% static 'css/pages/pagination.css' %}" rel="stylesheet">
 {% endblock %}
+{% block style %}
+    <style>
+        #footer-container {
+            display: none;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="" id="header-section">
         <div class="grid-container">
