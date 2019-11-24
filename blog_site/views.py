@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from accounts.forms import ProfileUpdateForm, ProfilePicUpdateForm
+from .exceptions import HasNoProfile
 from .forms import ArticleCreateForm, CommentForm, ReplyForm
 from .models import Article, Paragraph, Comment, Reply
 
@@ -68,7 +69,17 @@ class SingleArticle(View):
     def get(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
         self.context['article'] = article
-        self.context['profile'] = request.user.profile
+        try:
+            # if profile dose not exist raise custom exception
+            if not hasattr(request.user, "profile"):
+                raise HasNoProfile("user has no profile", "blog_site/views.py", "SingleArticle")
+            else:
+                # add profile to context
+                self.context['profile'] = request.user.profile
+        except HasNoProfile:
+            # make profile value None
+            self.context['profile'] = None
+
         return render(request, self.template_name, self.context)
 
 
@@ -92,6 +103,11 @@ class CreateArticleView(View):
             article = form.save(commit=False)
             article.author = request.user.profile
             article.save()
+
+            # add tags
+            for tag in form.cleaned_data.get("tags"):
+                article.tags.add(tag)
+
             counter = 1
             self.create_paragraphs(request=request, article=article, counter=counter)
             return redirect('articles-mode', filter_mode="All")
@@ -182,9 +198,8 @@ class ArticleDelete(View):
 
     def get(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
-        id = article.author.pk
         article.delete()
-        return redirect('profile-page', pk=id)
+        return redirect('profile-page')
 
 
 @method_decorator(login_required, name='dispatch')

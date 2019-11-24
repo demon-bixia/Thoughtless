@@ -65,14 +65,14 @@
                         <div class="cell auto">
                             <div class="card" style="width:100%;">
                                 <div class="card-divider post-header">
-                                    <a href="">
+                                    <a href="{% url 'single-article' article.pk %}">
                                         <h2 class="blog-title">
                                             {{ article.main_title }}
                                         </h2>
                                     </a>
                                     <p class="blog-info">
                                         <span>{{ article.date |date:"d M, Y" }}, in </span><a
-                                            href="#">{{ article.topic }},</a>
+                                            href="{% url 'single-article' article.pk %}">{{ article.topic }},</a>
                                         {% for tag in article.tags.all %}
                                             <a href="#" class="button">
                                                 {{ tag.name }}</a>

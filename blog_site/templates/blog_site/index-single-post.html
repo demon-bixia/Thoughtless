@@ -42,7 +42,7 @@
                 <div class="cell auto">
                     <div class="card" style="width:100%;margin-bottom: 0;">
                         <div class="card-divider post-header">
-                            <a href="">
+                            <a href="{% url 'single-article' article.pk %}">
                                 <h2 class="blog-title">
                                     {{ article.main_title }}
                                 </h2>
@@ -102,29 +102,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card comment-form-section" style="width:100%;margin-top: 0;">
-                        <div class="card-section post-content">
-                            <form action="{% url 'create-comment' article_pk=article.pk %}" id="comment-form"
-                                  method="post" data-url="{% url 'create-comment' article_pk=article.pk %}">
-                                {% csrf_token %}
-                                <div class="grid-x">
-                                    <div class="cell">
-                                        <h3 class="legend">Leave a Comment</h3>
-                                    </div>
-                                    <div class="cell small-12 medium-12">
+                    {% if profile %}
+                        <div class="card comment-form-section" style="width:100%;margin-top: 0;">
+                            <div class="card-section post-content">
+                                <form action="{% url 'create-comment' article_pk=article.pk %}" id="comment-form"
+                                      method="post" data-url="{% url 'create-comment' article_pk=article.pk %}">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <h3 class="legend">Leave a Comment</h3>
+                                        </div>
+                                        <div class="cell small-12 medium-12">
                                         <textarea class="comment-form-input" cols="30" id="id_text" name="text"
                                                   placeholder="Message*" rows="10"></textarea>
+                                        </div>
+                                        <div class="cell small-12 medium-12">
+                                            <button class="button comment-form-submit-button" type="submit"
+                                                    id="id_comment_submit">
+                                                Post Comment
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="cell small-12 medium-12">
-                                        <button class="button comment-form-submit-button" type="submit"
-                                                id="id_comment_submit">
-                                            Post Comment
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                     <div class="card comment-section" style="width:100%;margin-top:0;margin-bottom:0;">
                         <div class="card-section post-content" id="comment_container">
                             <h3 style="font-family: 'Yu Gothic UI', sans-serif;font-weight: 300;margin-bottom: 50px;margin-top: 50px"
@@ -132,7 +134,7 @@
                                 {{ article.comment_set.count }} Comments</h3>
                             <br>
                             {% for comment in article.comment_set.all %}
-                                <div class="grid-x comment"  id="comment_{{ comment.pk }}">
+                                <div class="grid-x comment" id="comment_{{ comment.pk }}">
                                     <div class="cell small-2 avatar-cell">
                                         <img alt="" class="avatar" src="{{ comment.author.profile_pic.url }}">
                                     </div>
@@ -141,15 +143,22 @@
                                             <a href="#" style="color: rgb(0,0,0)">{{ comment.author.user.username }}</a>
                                         </p>
                                         <p>
-                                            <small><span>{{ comment.date|date:"d M, Y" }}/ </span>
-                                                <a href="{% url 'create-reply' comment_pk=comment.pk %}"
-                                                   data-url="{% url 'create-reply' comment_pk=comment.pk %}" class="js-reply-to-comment"
-                                                   data-comment="{{ comment.pk }}">Reply/</a></small>
-                                            {% if comment.author.pk == profile.pk %}
-                                                <small><a href="{% url 'update-comment' pk=comment.pk %}"
-                                                          class="js-update-comment" data-url="{% url 'update-comment' pk=comment.pk %}" >edit/</a> </small>
-                                                <small><a href="{% url 'delete-comment' pk=comment.pk %}"
-                                                          data-url="{% url 'delete-comment' pk=comment.pk %}" class="js-delete-comment" data-comment="{{ comment.pk }}">delete/</a></small>
+                                            {% if profile %}
+                                                <small><span>{{ comment.date|date:"d M, Y" }}/ </span>
+                                                    <a href="{% url 'create-reply' comment_pk=comment.pk %}"
+                                                       data-url="{% url 'create-reply' comment_pk=comment.pk %}"
+                                                       class="js-reply-to-comment"
+                                                       data-comment="{{ comment.pk }}">Reply/</a></small>
+                                                {% if comment.author.pk == profile.pk %}
+                                                    <small><a href="{% url 'update-comment' pk=comment.pk %}"
+                                                              class="js-update-comment"
+                                                              data-url="{% url 'update-comment' pk=comment.pk %}">edit/</a>
+                                                    </small>
+                                                    <small><a href="{% url 'delete-comment' pk=comment.pk %}"
+                                                              data-url="{% url 'delete-comment' pk=comment.pk %}"
+                                                              class="js-delete-comment" data-comment="{{ comment.pk }}">delete/</a></small>
+                                                {% endif %}
+
                                             {% endif %}
                                         </p>
                                         <p>{{ comment.text }}</p>
@@ -165,6 +174,7 @@
                                                 <p><a href="#"
                                                       style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
                                                 <p>
+                                                {% if profile %}
                                                     <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
                                                     {% if reply.author.pk == profile.pk %}
                                                         <small><a href="{% url 'update-reply' pk=reply.pk %}"
@@ -174,6 +184,7 @@
                                                                    data-url="{% url 'delete-reply' pk=reply.pk %}"
                                                                    class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
                                                     {% endif %}
+                                                {% endif %}
                                                 </p>
                                                 <div class="reply-content">
                                                     <p>{{ reply.text }}</p>

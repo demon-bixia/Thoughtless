@@ -81,6 +81,17 @@
             font-family: "Yu Gothic UI", sans-serif;
         }
 
+        #paragraph-section .form-input {
+            background: transparent;
+            border: 4px solid transparent;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #paragraph-section .form-input:focus {
+            border: 4px solid rgba(103, 115, 241, 0.35);
+        }
+
         #footer-container {
             display: none;
         }
@@ -183,7 +194,7 @@
                             </div>
                             <div id="paragraph-section">
                                 <h3 class="paragraph-section-header">Paragraphs:</h3>
-                                <textarea name="text_area_1" id="id_text_area_1" cols="30" rows="5"
+                                <textarea name="text_area_1" id="id_text_area_1" cols="30" rows="7"
                                           placeholder="paragraph"
                                           class="form-input">{{ form.instance.paragraph_set.first.paragraph }}</textarea>
                                 <div id="paragraphs">
@@ -191,7 +202,7 @@
                                         {% if forloop.counter == 1 %}
                                         {% else %}
                                             <textarea name="text_area_{{ forloop.counter }}"
-                                                      id="id_text_area_{{ forloop.counter }}" cols="30" rows="5"
+                                                      id="id_text_area_{{ forloop.counter }}" cols="30" rows="7"
                                                       placeholder="paragraph"
                                                       class="form-input">{{ paragraph.paragraph }}</textarea>
                                         {% endif %}
@@ -212,7 +223,7 @@
 
                                         <a id="add" class="button" style="background: rgba(113,125,126,0);
                                       border: 1px solid #efefef;border-radius: 2px;margin-right: 4px;">
-                                            <i class="fa fa-plus" style="color:#959faa;"></i></a>
+                                            <i class="fa fa-paragraph" style="color:#959faa;"></i></a>
 
                                         <a class="button" style="background: rgb(204,70,62);
                                           border: 1px solid #efefef;border-radius: 2px;margin-right: 4px;"
