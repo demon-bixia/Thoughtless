@@ -11,12 +11,14 @@
     <link rel="stylesheet" href="{% static 'css/vendor/foundation.min.css' %}">
     <link rel="stylesheet" href="{% static 'fonts/webfonts/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendor/hamburgers.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages/navigation-menu.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages/title-bar.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendor/spinners.css' %}">
     <link rel="stylesheet" href="{% static 'css/pages/spinnerstyle.css' %}">
     {% block assets %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/pages/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/SearchModal.css' %}">
     <link href="{% static 'css/pages/form-section.css' %}" rel="stylesheet">
     <style>
         html.sr .load_hidden {
@@ -39,8 +41,8 @@
 </head>
 <body>
 
-<div id="spinner-wrapper" class="">
-    <div class="throbber-loader" id="spinner">
+<div class="spinner-wrapper">
+    <div class="throbber-loader spinner">
     </div>
 </div>
 
@@ -78,7 +80,8 @@
         <div class="small-bar-border hide-for-medium">
             <div class="title-bar" id="small-bar" data-hide-for="medium">
                 <div class="title-bar-left">
-                    <div class="title-bar-title"><i><a style="color:inherit;" href="{% url 'articles' %}">VENGEANCE</a></i></div>
+                    <div class="title-bar-title"><i><a style="color:inherit;" href="{% url 'articles' %}">VENGEANCE</a></i>
+                    </div>
                 </div>
                 <div class="title-bar-right">
                     <button class="hamburger hamburger--emphatic " type="button" id="menu-icon" data-toggle="OffCanvas">
@@ -94,7 +97,8 @@
             <div class="top-bar hide-for-small-only" id="nav-bar">
                 <div class="top-bar-left">
                     <ul class="menu" id="nav-logo">
-                        <li class="menu-text logo"><a style="color:inherit;" href="{% url 'articles' %}"><i>Vengeance</i></a></li>
+                        <li class="menu-text logo"><a style="color:inherit;"
+                                                      href="{% url 'articles' %}"><i>Vengeance</i></a></li>
                     </ul>
                 </div>
                 <div class="top-bar-right ">
@@ -109,6 +113,10 @@
                             <li><a href="{% url 'create-article' %}">Add Article</a></li>
                             <li><a href="{% url 'logout-view' %}" class="button">logout</a></li>
                         {% endif %}
+                        <li><a href="#search-modal" data-open="search-modal" class="button"
+                               id="js-search-button">
+                            <i class="fa fa-search"></i>
+                        </a></li>
                     </ul>
                 </div>
             </div>
@@ -168,8 +176,42 @@
             </div>
         </div>
         <div id="modal-section">
+            <!-- start empty modal -->
             <div class="reveal" data-reveal id="Modal" style="border:0;">
             </div>
+            <!-- end empty modal -->
+
+            <!-- start search modal -->
+            <div class="full reveal" data-reveal id="search-modal" >
+                <form action="{% url 'articles-search' %}" data-url=""{% url 'articles-search' %} id="search-form"
+                      method="get">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-12 ">
+                            <div class="input-group" tabindex="100">
+                                <span class="input-group-label search-icon" id="js-submit-search-button"><i
+                                        class=" fa fa-search"></i></span>
+                                <input class="input-group-field" autocomplete="off" name="keyword"
+                                       placeholder="Search for Articles"
+                                       type="text">
+                                <span class="input-group-label backspace-icon"><i></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="article-container">
+                    <div class="spinner-wrapper">
+                        <div class="refreshing-loader spinner">
+                        </div>
+                    </div>
+                    <div class="article-wrapper">
+
+                    </div>
+                </div>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- end search modal -->
         </div>
     </div>
 </div>
@@ -199,7 +241,10 @@
         });
     });
 </script>
+<script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/apps/navigation-menu.js' %}"></script>
+<script src="{% static 'js/apps/Search.js' %}"></script>
+<script src="{% static 'js/pages/searchModal.js' %}"></script>
 {% block javascript %}
 {% endblock %}
 </body>

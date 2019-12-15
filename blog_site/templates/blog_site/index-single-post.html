@@ -50,8 +50,7 @@
                             <p class="blog-info">
                                 <span>{{ article.date |date:"d M, Y" }}, in </span><a href="#">{{ article.topic }},</a>
                                 {% for tag in article.tags.all %}
-                                    <a href="#" class="button">
-                                        {{ tag.name }}</a>
+                                    <a href="#" class="button article-tag">{{ tag.name }}</a>
                                 {% endfor %}
                             </p>
                         </div>
@@ -174,17 +173,19 @@
                                                 <p><a href="#"
                                                       style="color: rgb(0,0,0)">{{ reply.author.user.username }}</a></p>
                                                 <p>
-                                                {% if profile %}
-                                                    <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
-                                                    {% if reply.author.pk == profile.pk %}
-                                                        <small><a href="{% url 'update-reply' pk=reply.pk %}"
-                                                                  class="js-update-reply" data-reply="{{ reply.pk }}"
-                                                                  data-url="{% url 'update-reply' pk=reply.pk %}">edit/</a></small>
-                                                        <small> <a href="{% url 'delete-reply' pk=reply.pk %}"
-                                                                   data-url="{% url 'delete-reply' pk=reply.pk %}"
-                                                                   class="js-delete-reply" data-reply="{{ reply.pk }}">delete/</a></small>
+                                                    {% if profile %}
+                                                        <small><span>{{ reply.date|date:"d M, Y" }}/</span></small>
+                                                        {% if reply.author.pk == profile.pk %}
+                                                            <small><a href="{% url 'update-reply' pk=reply.pk %}"
+                                                                      class="js-update-reply"
+                                                                      data-reply="{{ reply.pk }}"
+                                                                      data-url="{% url 'update-reply' pk=reply.pk %}">edit/</a></small>
+                                                            <small> <a href="{% url 'delete-reply' pk=reply.pk %}"
+                                                                       data-url="{% url 'delete-reply' pk=reply.pk %}"
+                                                                       class="js-delete-reply"
+                                                                       data-reply="{{ reply.pk }}">delete/</a></small>
+                                                        {% endif %}
                                                     {% endif %}
-                                                {% endif %}
                                                 </p>
                                                 <div class="reply-content">
                                                     <p>{{ reply.text }}</p>

@@ -52,7 +52,6 @@
 
 .post-header .blog-info a.button:hover {
     background: linear-gradient(90deg, orangered, darkorange);
-    border: white;
     color: white;
     transition: all 0.8s ease;
 }

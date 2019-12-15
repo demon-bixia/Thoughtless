@@ -1,0 +1,17 @@
+{% spaceless %}
+{% for article in articles %}
+    <div class="article">
+        <img src="{{ article.author.profile_pic.url }}" class="avatar" alt="author">
+        <div class="article-info">
+            <div><i class="fa fa-tags"></i>
+                {% for tag in article.tags.all %}
+                    <a class="button article-tag" href="#">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <h4>{{ article.main_title }}</h4>
+            <p>{{ article.get_lines }}</p>
+            <small>{{ article.author }} -{{ article.date|date:"d M" }}</small>
+        </div>
+    </div>
+{% endfor %}
+{% endspaceless %}

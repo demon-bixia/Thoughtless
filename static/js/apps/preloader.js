@@ -1,24 +1,23 @@
-let spinner = $("#spinner");
-let spinnerWrapper = $("#spinner-wrapper");
+let spinner = $(".spinner");
+let spinnerWrapper = $(".spinner-wrapper");
 
 // start loader
 loadUntilDocument();
 
-// start specific loader
-/*
-if(window.location.pathname !== "/articles/All/"){
-    loadUntilDocument();
-}
-*/
-
 function loadUntilDocument(){
-    spinnerWrapper.addClass('active');
-    $("body").css({"overflow": "hidden"});
+    startLoad();
 
     $(function(){
-        setTimeout(function () {
-            spinnerWrapper.removeClass('active');
-            $("body").css({"overflow": "visible"});
-        }, 400);
+        setTimeout(endLoad, 400);
     })
+}
+
+function startLoad(){
+    spinnerWrapper.addClass('active');
+    $("body").css({"overflow": "hidden"});
+}
+
+function endLoad(){
+    spinnerWrapper.removeClass('active');
+    $("body").css({"overflow": "visible"});
 }

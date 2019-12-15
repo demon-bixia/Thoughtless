@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -8,7 +10,7 @@ from django.views.generic import View
 
 from accounts.forms import ProfileUpdateForm, ProfilePicUpdateForm
 from .exceptions import HasNoProfile
-from .forms import ArticleCreateForm, CommentForm, ReplyForm
+from .forms import ArticleCreateForm, CommentForm, ReplyForm, SearchForm
 from .models import Article, Paragraph, Comment, Reply
 
 
@@ -425,3 +427,49 @@ class ProfilePicUpdateView(View):
         if form.is_valid():
             form.save()
         return redirect('profile-page')
+
+
+class SearchView(View):
+    template_name = "blog_site/part/search-article-block.html"
+    form_class = SearchForm
+    context = dict()  # used to render the template
+    data = dict()  # sent to client
+
+    def get(self, request):
+        form = self.form_class(request.GET)
+
+        if form.is_valid():
+            keyword = form.cleaned_data.get('keyword')
+            tag_pattern = r"^(?P<TagSearch>TAG:) *(?P<TagName>[A-Z]+)+$"
+            match = re.match(tag_pattern, keyword, re.IGNORECASE)
+
+            if match:
+                # extract tag name from regx
+                groups = match.groups()
+                tag_name = groups[1]
+                # search for articles based on tags
+                results = Article.objects.filter(tags__name__contains=tag_name)
+            else:
+                # search for articles based on title
+                results = Article.objects.filter(main_title__contains=form.cleaned_data.get('keyword'))
+
+            if results:
+                #  add html results
+                self.context['articles'] = results
+                html_content = render_to_string(self.template_name, self.context, request)
+
+                # add results to data dict
+                self.data['success'] = True
+                self.data['results_count'] = results.count()
+                self.data['html_content'] = html_content
+            else:
+                # if no results found
+                self.data['success'] = False
+                self.data['message'] = "no results"
+                self.data['results_count'] = 0
+        else:
+            # if form error occurred
+            self.data['success'] = False
+            self.data['errors'] = form.errors.as_json()
+
+        return JsonResponse(self.data)

@@ -74,8 +74,7 @@
                                         <span>{{ article.date |date:"d M, Y" }}, in </span><a
                                             href="{% url 'single-article' article.pk %}">{{ article.topic }},</a>
                                         {% for tag in article.tags.all %}
-                                            <a href="#" class="button">
-                                                {{ tag.name }}</a>
+                                            <a href="#" class="button article-tag">{{ tag.name }}</a>
                                         {% endfor %}
                                     </p>
                                 </div>
@@ -154,7 +153,7 @@
             <div class="reveal profileModal" id="{{ article.author.user.pk }}_profile_modal" data-reveal>
                 <div class="modal-avatar-section">
                     <img src="{{ article.author.profile_pic.url }}" alt="">
-                    <h3>{{article.author.user.username}}</h3>
+                    <h3>{{ article.author.user.username }}</h3>
                 </div>
                 <div class="modal-info-section">
                     <!-- Bio-->
@@ -164,7 +163,7 @@
 
                     <!--Job-->
                     <small>Job</small>
-                    <p>{{article.author.job}}</p>
+                    <p>{{ article.author.job }}</p>
                 </div>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>

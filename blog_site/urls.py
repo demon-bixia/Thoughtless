@@ -3,10 +3,17 @@ from django.urls import path
 from . import views as blog_views
 
 urlpatterns = [
+    # home page main page
     path("", blog_views.Articles.as_view(), name="articles"),
+
     # the articles view urls
     path("articles/<str:filter_mode>/", blog_views.Articles.as_view(), name="articles-mode"),
     path("articles/article/<int:pk>/", blog_views.SingleArticle.as_view(), name="single-article"),
+
+    # Search
+    path('search/articles/', blog_views.SearchView.as_view(), name="articles-search"),
+
+    # profile view url
     path("profile/", blog_views.ProfileView.as_view(), name="profile-page"),
     path("profile_pic_update/", blog_views.ProfilePicUpdateView.as_view(), name="profile-pic-update"),
 

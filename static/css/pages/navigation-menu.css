@@ -52,6 +52,7 @@
     border-radius: 1px;
     padding-left: 11px;
     transition: all .8s ease;
+    font-weight: bolder;
 }
 
 .dropdown.menu > li.is-dropdown-submenu-parent > a::after {

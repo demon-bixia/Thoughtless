@@ -21,3 +21,7 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ('text',)
+
+
+class SearchForm(forms.Form):
+    keyword = forms.CharField(label="keyword", widget=forms.Textarea())
