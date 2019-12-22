@@ -8,7 +8,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
-WSGI_APPLICATIONS = ""
+WSGI_APPLICATIONS = "blog.wsgi.application"
 
 ALLOWED_HOSTS = [
   'https://vengance.herokuapp.com/',
@@ -96,13 +96,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
-# STATIC_TMP = os.path.join(BASE_DIR, 'static')
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-# os.makedirs(STATIC_TMP, exist_ok=True)
+STATIC_TMP = os.path.normpath(os.path.join(BASE_DIR, 'static'))
+
+os.makedirs(STATIC_TMP, exist_ok=True)
 
 # adds gzip compression support
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
