@@ -1,0 +1,122 @@
+.blog-container {
+    padding: 0 30px;
+}
+
+.blog-thumbnail {
+    width: 100%;
+    height: 355px;
+    background-size: cover;
+    border-radius: .3rem;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+
+.blog-thumbnail .blog-thumbnail-background {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    transition: 1s ease;
+}
+
+.blog-thumbnail:hover .blog-thumbnail-background {
+    transform: scale(1.3);
+}
+
+.blog-thumbnail:hover .blog-thumbnail-background .overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, transparent 70%);
+}
+
+
+.blog-thumbnail .overlay-link {
+    width: 100%;
+    height: 100%;
+    outline: 0;
+    border: none;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.blog-thumbnail .overlay {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%);
+    background-color: transparent;
+    transition: all 5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 20px;
+    cursor: pointer;
+}
+
+.thumbnail-info {
+    text-align: center;
+}
+
+.thumbnail-info .blog-tag {
+    margin-top: 15px;
+    border-radius: 5px;
+    transform: scale(0.8);
+    height: 30px;
+    border-color: transparent;
+    background: linear-gradient(90deg, orangered, darkorange);
+    color: #ffffff;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.thumbnail-info .blog-heading {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 300;
+    color: #fff;
+    font-family: "Yu Gothic UI", sans-serif;
+}
+
+.thumbnail-info .blog-date {
+    font-family: "Yu Gothic UI", sans-serif;
+    font-weight: 300;
+    color: #fff;
+}
+
+.blog-thumbnail:hover .overlay .thumbnail-info {
+    visibility: hidden;
+
+}
+
+@media screen and (max-width: 638px) {
+    .blog-container {
+        padding: 0 30px;
+    }
+
+    .blog-thumbnail:hover .blog-thumbnail-background {
+        transform: scale(1);
+    }
+
+    .blog-thumbnail:hover .blog-thumbnail-background .overlay {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 70%);
+    }
+
+    .blog-thumbnail:hover .overlay .thumbnail-info {
+        visibility: visible;
+    }
+
+    .blog-thumbnail .overlay-link {
+        width: 100%;
+        height: 100%;
+        outline: 0;
+        border: none;
+        overflow: hidden;
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+        cursor: pointer;
+    }
+
+}

@@ -70,6 +70,8 @@
                     </li>
                 </ul>
             </li>
+            <li><a href="#" data-open="search-modal">Search</a>
+            </li>
             {% if request.user.is_authenticated %}
                 <li><a href="{% url 'profile-page' %}">Profile</a></li>
                 <li><a href="{% url 'create-article' %}">Create An Article</a></li>

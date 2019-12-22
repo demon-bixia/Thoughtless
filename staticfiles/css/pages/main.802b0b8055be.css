@@ -1,0 +1,7 @@
+html.sr .load-hidden {
+    visibility: hidden;
+}
+
+.menu.icon-left li a i.fa {
+    margin-right: 0;
+}
