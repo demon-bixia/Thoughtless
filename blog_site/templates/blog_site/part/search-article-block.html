@@ -8,7 +8,7 @@
                     <a class="button article-tag" href="#">{{ tag.name }}</a>
                 {% endfor %}
             </div>
-            <h4>{{ article.main_title }}</h4>
+            <h4><a href="{% url 'single-article' article.pk %}">{{ article.main_title }}</a></h4>
             <p>{{ article.get_lines }}</p>
             <small>{{ article.author }} -{{ article.date|date:"d M" }}</small>
         </div>
