@@ -9,6 +9,8 @@ urlpatterns = [
     path("valid_email/", auth_views.AjaxRegister.as_view(), name="validate-email"),
     re_path(r"^active/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
             auth_views.ActivateAccount.as_view(), name="active"),
+    # re_path(r"^active/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+            # auth_views.ActivateAccount.as_view(), name="active"),
     # password_reset
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
