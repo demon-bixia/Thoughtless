@@ -74,7 +74,7 @@ class ActivateAccount(View):
 
     def get(self, request, uidb64, token):
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = force_text(urlsafe_base64_decode(uidb64)).deocde()
             user = User.objects.get(id=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
