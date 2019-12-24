@@ -58,7 +58,7 @@ class RegisterView(View):
         message = render_to_string('accounts/account_activation_template.html', {
             'user': user,
             'domain': current_site.domain,
-            'uid64': urlsafe_base64_encode(force_bytes(user.pk)),
+            'uid64': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
             'token': account_activation_token.make_token(user),
         })
         to_email = email
@@ -74,7 +74,7 @@ class ActivateAccount(View):
 
     def get(self, request, uidb64, token):
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = force_text(urlsafe_base64_decode(uidb64)).deocde()
             user = User.objects.get(id=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
