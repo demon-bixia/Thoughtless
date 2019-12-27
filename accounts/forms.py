@@ -44,7 +44,7 @@ class UserChangeForm(forms.ModelForm):
 
 class ProfileCreationForm(forms.ModelForm):
     bio = forms.CharField(widget=forms.Textarea, label="fullscreen")
-    profile_pic = forms.ImageField(widget=forms.FileInput(attrs={'size': '50'}))
+    profile_pic = forms.ImageField(widget=forms.FileInput(attrs={'size': '50'}), required=False)
 
     class Meta:
         model = Profile

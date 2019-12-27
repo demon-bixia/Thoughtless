@@ -1,20 +1,13 @@
-from django.shortcuts import render, redirect
-from .forms import UserCreationForm, ProfileCreationForm
-from django.views.generic import View
-from django.contrib.auth import views as built_in_views
-from django.contrib.auth import logout, get_user_model
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from django.utils.encoding import force_text, force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
-from .tokens import account_activation_token
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.contrib import messages
-from django.http import HttpResponse
-from django.urls import reverse_lazy
+from django.contrib.auth import logout, get_user_model
+from django.contrib.auth import views as built_in_views
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views.generic import View
+
+from .forms import UserCreationForm, ProfileCreationForm
 
 User = get_user_model()
 
@@ -40,51 +33,13 @@ class RegisterView(View):
         self.context['p_form'] = p_form
         if form.is_valid() and p_form.is_valid():
             self.form_valid(request)
-            messages.success(request, "we've sent a confirmation email to you address")
             return redirect('login-view')
         else:
             return render(request, self.template_name, self.context)
 
     def form_valid(self, request):
-        user = self.context['form'].save(commit=False)
-        user.is_active = False
-        user.save()
-        self.send_activation_token(request, user, user.email)
+        user = self.context['form'].save(commit=True)
         self.context['p_form'].save(user=user)
-
-    def send_activation_token(self, request, user, email):
-        current_site = get_current_site(request)
-        mail_subject = 'Activate your account'
-        message = render_to_string('accounts/account_activation_template.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid64': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-            'token': account_activation_token.make_token(user),
-        })
-        to_email = email
-        email = EmailMessage(
-            mail_subject,
-            message,
-            to=[to_email]
-        )
-        email.send()
-
-
-class ActivateAccount(View):
-
-    def get(self, request, uidb64, token):
-        try:
-            uid = force_text(urlsafe_base64_decode(uidb64)).deocde()
-            user = User.objects.get(id=uid)
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-        if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            messages.success(request, 'your account is activated now you can login')
-            return redirect('login-view')
-        else:
-            return HttpResponse("activation link invalid")
 
 
 class LoginView(built_in_views.LoginView):
@@ -98,26 +53,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login-view')
-
-
-class PasswordResetView(built_in_views.PasswordResetView):
-    template_name = "accounts/password_reset/password_reset.html"
-    subject_template_name = "accounts/password_reset/subject.text"
-    email_template_name = "accounts/password_reset/password_reset_email.html"
-    success_url = reverse_lazy('password_reset_done')
-
-
-class PasswordResetDoneView(built_in_views.PasswordResetDoneView):
-    template_name = "accounts/password_reset/password_reset_done.html"
-
-
-class PasswordResetConfirmView(built_in_views.PasswordResetConfirmView):
-    template_name = "accounts/password_reset/password_reset_confirm.html"
-    success_url = reverse_lazy('password_reset_complete')
-
-
-class PasswordResetCompleteView(built_in_views.PasswordResetCompleteView):
-    template_name = "accounts/password_reset/password_reset_complete.html"
 
 
 class AjaxRegister(View):
