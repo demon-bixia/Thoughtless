@@ -123,17 +123,4 @@ LOGIN_URL = "login-view"
 
 LOGIN_REDIRECT_URL = "articles"
 
-
-# S.T.M.P SERVER SETTINGS
-
-EMAIL_HOST = 'smtp-relay.sendinblue.com'
-
-EMAIL_USE_TLS = True
-
-EMAIL_PORT = 587
-
-EMAIL_HOST_USER = 'mohslahmed1000@gmail.com'
-
-EMAIL_HOST_PASSWORD = 'YGNR9MP4Lvy6XWjm'
-
 django_heroku.settings(locals())
