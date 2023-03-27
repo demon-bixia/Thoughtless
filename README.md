@@ -34,14 +34,11 @@ python manage.py runserver
 Here are some screenshots of the app. you can check out the rest in the screenshots folder.
 
 <img src="screenshots/all.png"/>
-<p style="text-align:center;width:100%;">all  articles</p>
 
 <br/>
 
 <img src="screenshots/create.png"/>
-<p style="text-align:center;width:100%;">create  articles</p>
 
 <br/>
 
 <img src="screenshots/featured.png"/>
-<p style="text-align:center;width:100%;">featured  articles</p>
