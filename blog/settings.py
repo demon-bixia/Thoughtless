@@ -1,42 +1,41 @@
 import os
-import django_heroku
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# noinspection SpellCheckingInspection
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = int(os.environ.get('DEBUG', default=0))
 
 WSGI_APPLICATIONS = "blog.wsgi.application"
 
-ALLOWED_HOSTS = [
-  'https://vengance.herokuapp.com/',
-]
-
 INSTALLED_APPS = [
+    # built-in
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+
+    # 3rd party
+    'widget_tweaks',
+
+    # my apps
     'accounts.apps.AccountsConfig',
     'blog_site.apps.BlogSiteConfig',
-    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Simplified static file serving.
-    # https://warehouse.python.org/project/whitenoise/
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'blog.urls'
@@ -59,11 +58,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog.wsgi.application'
 
-# noinspection PyUnresolvedReferences
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'HOST': os.environ.get('DATABASE_PORT'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
 
@@ -100,20 +102,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 STATIC_TMP = os.path.normpath(os.path.join(BASE_DIR, 'static'))
 
 os.makedirs(STATIC_TMP, exist_ok=True)
 
-# adds gzip compression support
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = "/media/"
-
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-
-DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
 
 # AUTHENTICATION SETTINGS
 
@@ -123,4 +120,4 @@ LOGIN_URL = "login-view"
 
 LOGIN_REDIRECT_URL = "articles"
 
-django_heroku.settings(locals())
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

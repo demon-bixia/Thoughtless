@@ -57,7 +57,6 @@
     transition: all 0.8s ease;
 }
 
-/*noinspection CssReplaceWithShorthandSafely*/
 .img-container {
     height: 60vh;
     background: url('../../imgs/beach-bird-s-eye-view-boats-1852247.jpg');

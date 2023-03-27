@@ -11,7 +11,7 @@ class Topic(models.Model):
 
 
 def upload_content(instance, filename):
-    return f"{instance.author.pk}/articles/{instance.main_title}/{filename}/"
+    return f"{instance.author.pk}/article_headers/{filename}"
 
 
 class Tag(models.Model):

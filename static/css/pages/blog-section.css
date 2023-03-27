@@ -56,7 +56,6 @@
     transition: all 0.8s ease;
 }
 
-/*noinspection CssReplaceWithShorthandSafely*/
 .img-container {
     height: 60vh;
     background-size: cover;

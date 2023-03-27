@@ -12,7 +12,6 @@ from .forms import UserCreationForm, ProfileCreationForm
 User = get_user_model()
 
 
-# noinspection PyMethodMayBeStatic
 class RegisterView(View):
     template_name = "accounts/register.html"
     form_class = UserCreationForm
@@ -46,7 +45,6 @@ class LoginView(built_in_views.LoginView):
     template_name = 'accounts/login.html'
 
 
-# noinspection PyMethodMayBeStatic
 @method_decorator(login_required, name='dispatch')
 class LogoutView(View):
 

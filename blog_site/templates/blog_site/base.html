@@ -2,12 +2,13 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vengeance</title>
+    <title>Thoughtless</title>
     <link rel="stylesheet" href="{% static 'css/vendor/foundation.min.css' %}">
     <link rel="stylesheet" href="{% static 'fonts/webfonts/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendor/hamburgers.min.css' %}">
@@ -39,215 +40,218 @@
 
     {% endblock %}
 </head>
+
 <body>
 
-<div class="spinner-wrapper">
-    <div class="throbber-loader spinner">
+    <div class="spinner-wrapper">
+        <div class="throbber-loader spinner">
+        </div>
     </div>
-</div>
 
-<div class="off-canvas-wrapper">
-    <div class="off-canvas position-right" id="OffCanvas" data-off-canvas>
+    <div class="off-canvas-wrapper">
+        <div class="off-canvas position-right" id="OffCanvas" data-off-canvas>
 
-        <ul class="vertical menu accordion-menu" data-accordion-menu id="off-canvas-menu">
-            <li>
-                <a href="#">registration</a>
-                <ul class="menu vertical nested">
+            <ul class="vertical menu accordion-menu" data-accordion-menu id="off-canvas-menu">
+                <li>
+                    <a href="#">registration</a>
+                    <ul class="menu vertical nested">
 
-                    {% if not user.is_authenticated %}
+                        {% if not user.is_authenticated %}
                         <li><a href="{% url 'register-view' %}">Signup <i class="fa fa-user"></i></a></li>
                         <li><a href="{% url 'login-view' %}">login <i class="fa fa-lock"></i></a></li>
-                    {% else %}
+                        {% else %}
                         <li><a href="{% url 'logout-view' %}">logout <i class="fa fa-arrow-alt-circle-right"></i></a>
                         </li>
-                    {% endif %}
-                </ul>
-            </li>
-            <li><a href="#">Articles</a>
-                <ul class="menu vertical nested">
-                    <li><a href="{% url 'articles' %}">Featured <i class="fa fa-star"></i></a></li>
-                    <li><a href="{% url 'articles-mode' filter_mode='All' %}">All <i class="fa fa-newspaper"></i></a>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#" data-open="search-modal">Search</a>
-            </li>
-            {% if request.user.is_authenticated %}
+                        {% endif %}
+                    </ul>
+                </li>
+                <li><a href="#">Articles</a>
+                    <ul class="menu vertical nested">
+                        <li><a href="{% url 'articles' %}">Featured <i class="fa fa-star"></i></a></li>
+                        <li><a href="{% url 'articles-mode' filter_mode='All' %}">All <i
+                                    class="fa fa-newspaper"></i></a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#" data-open="search-modal">Search</a>
+                </li>
+                {% if request.user.is_authenticated %}
                 <li><a href="{% url 'profile-page' %}">Profile</a></li>
                 <li><a href="{% url 'create-article' %}">Create An Article</a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="off-canvas-content" data-off-canvas-content>
-        <div class="small-bar-border hide-for-medium">
-            <div class="title-bar" id="small-bar" data-hide-for="medium">
-                <div class="title-bar-left">
-                    <div class="title-bar-title"><i><a style="color:inherit;" href="{% url 'articles' %}">VENGEANCE</a></i>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="off-canvas-content" data-off-canvas-content>
+            <div class="small-bar-border hide-for-medium">
+                <div class="title-bar" id="small-bar" data-hide-for="medium">
+                    <div class="title-bar-left">
+                        <div class="title-bar-title"><i><a style="color:inherit;"
+                                    href="{% url 'articles' %}">Thoughtless</a></i>
+                        </div>
+                    </div>
+                    <div class="title-bar-right">
+                        <button class="hamburger hamburger--emphatic " type="button" id="menu-icon"
+                            data-toggle="OffCanvas">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
                     </div>
                 </div>
-                <div class="title-bar-right">
-                    <button class="hamburger hamburger--emphatic " type="button" id="menu-icon" data-toggle="OffCanvas">
-                              <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                              </span>
-                    </button>
-                </div>
             </div>
-        </div>
 
-        <div class="nav-border">
-            <div class="top-bar hide-for-small-only" id="nav-bar">
-                <div class="top-bar-left">
-                    <ul class="menu" id="nav-logo">
-                        <li class="menu-text logo"><a style="color:inherit;"
-                                                      href="{% url 'articles' %}"><i>Vengeance</i></a></li>
-                    </ul>
-                </div>
-                <div class="top-bar-right ">
-                    <ul class="dropdown menu icons icon-left " data-dropdown-menu id="nav-menu">
-                        {% if not user.is_authenticated %}
+            <div class="nav-border">
+                <div class="top-bar hide-for-small-only" id="nav-bar">
+                    <div class="top-bar-left">
+                        <ul class="menu" id="nav-logo">
+                            <li class="menu-text logo"><a style="color:inherit;"
+                                    href="{% url 'articles' %}"><i>Thoughtless</i></a></li>
+                        </ul>
+                    </div>
+                    <div class="top-bar-right ">
+                        <ul class="dropdown menu icons icon-left " data-dropdown-menu id="nav-menu">
+                            {% if not user.is_authenticated %}
                             <li><a href="{% url 'login-view' %}" class="button">Login</a></li>
                             <li><a href="{% url 'register-view' %}" class="button">register</a></li>
-                        {% else %}
+                            {% else %}
                             <li><a href="{% url 'articles' %}">Featured</a></li>
                             <li><a href="{% url 'articles-mode' filter_mode='All' %}">Articles</a></li>
                             <li><a href="{% url 'profile-page' %}">Profile</a></li>
                             <li><a href="{% url 'create-article' %}">Add Article</a></li>
                             <li><a href="{% url 'logout-view' %}" class="button">logout</a></li>
-                        {% endif %}
-                        <li><a href="#search-modal" data-open="search-modal" class="button"
-                               id="js-search-button">
-                            <i class="fa fa-search"></i>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        {% block content %}
-
-        {% endblock %}
-        <div class="" id="footer-section">
-            <div class="grid-container" id="footer-container">
-                <div class="grid-y">
-                    <div class="cell small-11">
-                        <div class="grid-x large-up-5 grid-margin-x footer-top">
-                            <div class="cell">
-                                Product
-                                <ul class="menu vertical footer-links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Press</a></li>
-                                </ul>
-                            </div>
-                            <div class="cell">
-                                Company
-                                <ul class="menu vertical footer-links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Press</a></li>
-                                </ul>
-                            </div>
-                            <div class="cell">
-                                Resources
-                                <ul class="menu vertical footer-links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Press</a></li>
-                                </ul>
-                            </div>
-                            <div class="cell">
-                                Contact
-                                <ul class="menu vertical footer-links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Press</a></li>
-                                </ul>
-                            </div>
-                            <div class="cell" style="font-size: 28px;font-weight: 600;font-style: italic;">
-                                Vengeance
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cell small-1">
-                        <div class="grid-x grid-margin-x large-up-3">
-                            <div class="cell hide-for-medium-only hide-for-small-only"></div>
-                            <div class="cell hide-for-medium-only hide-for-small-onl"></div>
-                        </div>
+                            {% endif %}
+                            <li><a href="#search-modal" data-open="search-modal" class="button" id="js-search-button">
+                                    <i class="fa fa-search"></i>
+                                </a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="modal-section">
-            <!-- start empty modal -->
-            <div class="reveal" data-reveal id="Modal" style="border:0;">
-            </div>
-            <!-- end empty modal -->
+            {% block content %}
 
-            <!-- start search modal -->
-            <div class="full reveal" data-reveal id="search-modal" >
-                <form action="{% url 'articles-search' %}" data-url=""{% url 'articles-search' %} id="search-form"
-                      method="get">
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell small-12 ">
-                            <div class="input-group" tabindex="100">
-                                <span class="input-group-label search-icon" id="js-submit-search-button"><i
-                                        class=" fa fa-search"></i></span>
-                                <input class="input-group-field" autocomplete="off" name="keyword"
-                                       placeholder="Search for Articles"
-                                       type="text">
-                                <span class="input-group-label backspace-icon"><i></i></span>
+            {% endblock %}
+            <div class="" id="footer-section">
+                <div class="grid-container" id="footer-container">
+                    <div class="grid-y">
+                        <div class="cell small-11">
+                            <div class="grid-x large-up-5 grid-margin-x footer-top">
+                                <div class="cell">
+                                    Product
+                                    <ul class="menu vertical footer-links">
+                                        <li><a href="#">About us</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Press</a></li>
+                                    </ul>
+                                </div>
+                                <div class="cell">
+                                    Company
+                                    <ul class="menu vertical footer-links">
+                                        <li><a href="#">About us</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Press</a></li>
+                                    </ul>
+                                </div>
+                                <div class="cell">
+                                    Resources
+                                    <ul class="menu vertical footer-links">
+                                        <li><a href="#">About us</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Press</a></li>
+                                    </ul>
+                                </div>
+                                <div class="cell">
+                                    Contact
+                                    <ul class="menu vertical footer-links">
+                                        <li><a href="#">About us</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Press</a></li>
+                                    </ul>
+                                </div>
+                                <div class="cell" style="font-size: 28px;font-weight: 600;font-style: italic;">
+                                    Thoughtless
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell small-1">
+                            <div class="grid-x grid-margin-x large-up-3">
+                                <div class="cell hide-for-medium-only hide-for-small-only"></div>
+                                <div class="cell hide-for-medium-only hide-for-small-onl"></div>
                             </div>
                         </div>
                     </div>
-                </form>
-                <div id="article-container">
-                    <div class="spinner-wrapper">
-                        <div class="refreshing-loader spinner">
+                </div>
+            </div>
+            <div id="modal-section">
+                <!-- start empty modal -->
+                <div class="reveal" data-reveal id="Modal" style="border:0;">
+                </div>
+                <!-- end empty modal -->
+
+                <!-- start search modal -->
+                <div class="full reveal" data-reveal id="search-modal">
+                    <form action="{% url 'articles-search' %}" data-url="" {% url 'articles-search' %} id="search-form"
+                        method="get">
+                        <div class="grid-x grid-margin-x">
+                            <div class="cell small-12 ">
+                                <div class="input-group" tabindex="100">
+                                    <span class="input-group-label search-icon" id="js-submit-search-button"><i
+                                            class=" fa fa-search"></i></span>
+                                    <input class="input-group-field" autocomplete="off" name="keyword"
+                                        placeholder="Search for Articles" type="text">
+                                    <span class="input-group-label backspace-icon"><i></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="article-container">
+                        <div class="spinner-wrapper">
+                            <div class="refreshing-loader spinner">
+                            </div>
+                        </div>
+                        <div class="article-wrapper">
+
                         </div>
                     </div>
-                    <div class="article-wrapper">
-
-                    </div>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <!-- end search modal -->
             </div>
-            <!-- end search modal -->
         </div>
     </div>
-</div>
-<!-- JScript -->
-<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
-<script src="{% static 'js/vendor/foundation.min.js' %}"></script>
-<script src="{% static 'js/apps/preloader.js' %}"></script>
-<!--suppress JSJQueryEfficiency -->
-<script>
-    $(function () {
-        $(document).foundation();
+    <!-- JScript -->
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/vendor/foundation.min.js' %}"></script>
+    <script src="{% static 'js/apps/preloader.js' %}"></script>
+    <!--suppress JSJQueryEfficiency -->
+    <script>
+        $(function () {
+            $(document).foundation();
 
-        $("#menu-icon").click(function () {
-            $(this).addClass('is-active');
-        });
+            $("#menu-icon").click(function () {
+                $(this).addClass('is-active');
+            });
 
-        $("#OffCanvas").on('closed.zf.offcanvas', function () {
-            $('#menu-icon').removeClass('is-active');
-        });
+            $("#OffCanvas").on('closed.zf.offcanvas', function () {
+                $('#menu-icon').removeClass('is-active');
+            });
 
-        $(window).scroll(function () {
-            if (pageYOffset >= 90) {
-                $('#small-bar').addClass('shadow-on');
-            } else {
-                $('#small-bar').removeClass('shadow-on');
-            }
+            $(window).scroll(function () {
+                if (pageYOffset >= 90) {
+                    $('#small-bar').addClass('shadow-on');
+                } else {
+                    $('#small-bar').removeClass('shadow-on');
+                }
+            });
         });
-    });
-</script>
-<script src="{% static 'js/main.js' %}"></script>
-<script src="{% static 'js/apps/navigation-menu.js' %}"></script>
-<script src="{% static 'js/apps/Search.js' %}"></script>
-<script src="{% static 'js/pages/searchModal.js' %}"></script>
-{% block javascript %}
-{% endblock %}
+    </script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/apps/navigation-menu.js' %}"></script>
+    <script src="{% static 'js/apps/Search.js' %}"></script>
+    <script src="{% static 'js/pages/searchModal.js' %}"></script>
+    {% block javascript %}
+    {% endblock %}
 </body>
+
 </html>

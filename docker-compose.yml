@@ -1,0 +1,38 @@
+# docker-compose uses services instead of containers
+version: "3"
+
+services:
+  # define a service with name web
+  web:
+    # build the image in current directory
+    build: .
+    # execute this command to start this service
+    command: gunicorn blog.wsgi -b 0.0.0.0:8000
+    # bind this directory with /code in container
+    volumes:
+      - .:/app 
+    # bind port 8000 in local machine with port 8000 in container
+    ports:
+      - 8000:8000
+    # don't run this service before db
+    depends_on:
+      - db
+    # the file containing environment variables for running the web server
+    env_file:
+        - env/development.env
+
+  # define a database service with name db
+  db:
+    # build the container from this image
+    image: postgres
+    volumes:
+      # bind /var/lib/postgresql/data in container with ...
+      #...postgres_data volume in host files system
+      - postgres_data:/var/lib/postgresql/data
+    # the file containing environment variables for running the database
+    env_file:
+        - env/development.env
+
+# list all named volumes in here
+volumes:
+  postgres_data:

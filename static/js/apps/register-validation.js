@@ -48,7 +48,6 @@ $(function(){    let form = $("#form");
             dataType:"json",
             data: {"email":$(this).val()},
             success: function(data){
-                // noinspection JSUnresolvedVariable
                 if (data.is_valid){
                     error.html("")
                 }else{

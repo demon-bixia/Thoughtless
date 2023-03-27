@@ -14,7 +14,6 @@ from .forms import ArticleCreateForm, CommentForm, ReplyForm, SearchForm
 from .models import Article, Paragraph, Comment, Reply
 
 
-# noinspection PyMethodMayBeStatic
 # the Article list view only accept get requests
 # filters the articles query set and returns a paginated
 # article list
@@ -28,9 +27,11 @@ class Articles(View):
             self.filter_content = filter_mode
 
         article_list = self.get_articles()  # get all Articles
-        paginator = self.pagination(article_list)  # create a paginator for articles querySet
+        # create a paginator for articles querySet
+        paginator = self.pagination(article_list)
         page = request.GET.get('page')  # get current page from request
-        self.p_queryset = paginator.get_page(page)  # get paginated queryset according to current page
+        # get paginated queryset according to current page
+        self.p_queryset = paginator.get_page(page)
 
         context = self.get_context_data()
         context['pre_url'] = request.META.get('HTTP_REFER')  # get the pre url
@@ -74,7 +75,8 @@ class SingleArticle(View):
         try:
             # if profile dose not exist raise custom exception
             if not hasattr(request.user, "profile"):
-                raise HasNoProfile("user has no profile", "blog_site/views.py", "SingleArticle")
+                raise HasNoProfile("user has no profile",
+                                   "blog_site/views.py", "SingleArticle")
             else:
                 # add profile to context
                 self.context['profile'] = request.user.profile
@@ -111,12 +113,12 @@ class CreateArticleView(View):
                 article.tags.add(tag)
 
             counter = 1
-            self.create_paragraphs(request=request, article=article, counter=counter)
+            self.create_paragraphs(
+                request=request, article=article, counter=counter)
             return redirect('articles-mode', filter_mode="All")
         else:
             return render(request, self.template_name, self.context)
 
-    # noinspection PyMethodMayBeStatic
     # saves the article paragraphs one by one
     # looping the request.POST dict
     def create_paragraphs(self, request, article, counter):
@@ -143,7 +145,6 @@ class ArticleUpdate(View):
     template_name = "blog_site/forms/ArticleUpdate.html"
     context = dict()
 
-    # noinspection PyMethodOverriding
     def get(self, request, pk):
         article = get_object_or_404(Article, pk=pk)
         form = self.form_class(instance=article)
@@ -152,7 +153,6 @@ class ArticleUpdate(View):
         self.context['form'] = form
         return render(request, self.template_name, self.context)
 
-    # noinspection PyMethodOverriding
     def post(self, request, pk=None):
         article = get_object_or_404(Article, pk=pk)
         form = self.form_class(request.POST, request.FILES, instance=article)
@@ -173,11 +173,13 @@ class ArticleUpdate(View):
         counter = o_count + 1
         for key, value in request.POST.items():
             if key == f"text_area_{counter}":
-                paragraph = Paragraph(paragraph=value, article=article, type="1line")
+                paragraph = Paragraph(
+                    paragraph=value, article=article, type="1line")
                 paragraph.save()
                 counter += 1
             if key == f"text_area_split_{counter}":
-                paragraph = Paragraph(paragraph=value, article=article, type="split")
+                paragraph = Paragraph(
+                    paragraph=value, article=article, type="split")
                 paragraph.save()
                 counter += 1
         return counter
@@ -189,7 +191,8 @@ class ArticleUpdate(View):
                 paragraph.paragraph = request.POST.get(f"text_area_{counter}")
                 counter += 1
             if request.POST.get(f"text_area_split_{counter}"):
-                paragraph.paragraph = request.POST.get(f"text_area_split_{counter}")
+                paragraph.paragraph = request.POST.get(
+                    f"text_area_split_{counter}")
                 counter += 1
             paragraph.save()
         return counter
@@ -247,14 +250,16 @@ class CommentUpdate(View):
         form = self.form_class(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save()
-            html_content = render_to_string(self.template_name, {"comment": comment, 'profile': request.user.profile})
+            html_content = render_to_string(
+                self.template_name, {"comment": comment, 'profile': request.user.profile})
             self.data['successful'] = True
             self.data['html_content'] = html_content
             self.data['pk'] = pk
             return JsonResponse(self.data)
         else:
             self.data['successful'] = False
-            html_form = render_to_string(self.form_template, {'form': form, 'comment': comment})
+            html_form = render_to_string(
+                self.form_template, {'form': form, 'comment': comment})
             self.data['html_form'] = html_form
         return JsonResponse(self.data)
 
@@ -287,7 +292,8 @@ class ReplyCreate(View):
         form = self.form_class()
         try:
             comment = Comment.objects.get(pk=comment_pk)
-            html_form = render_to_string(self.form_template, {'form': form, 'comment': comment}, request=request)
+            html_form = render_to_string(
+                self.form_template, {'form': form, 'comment': comment}, request=request)
             self.data['html_form'] = html_form
             self.data['html_form'] = html_form
             self.data['successful'] = True
@@ -314,7 +320,8 @@ class ReplyCreate(View):
                 self.data['successful'] = False
         else:
             self.data['successful'] = False
-            self.data['html_form'] = render_to_string(self.form_template, {'form': form})
+            self.data['html_form'] = render_to_string(
+                self.form_template, {'form': form})
         return JsonResponse(self.data)
 
 
@@ -329,7 +336,8 @@ class ReplyUpdate(View):
         try:
             reply = Reply.objects.get(pk=pk)
             form = self.form_class(instance=reply)
-            html_form = render_to_string(self.form_template, {'form': form, 'reply': reply}, request=request)
+            html_form = render_to_string(
+                self.form_template, {'form': form, 'reply': reply}, request=request)
             self.data['html_form'] = html_form
             self.data['successful'] = True
         except Reply.DoesNotExist:
@@ -392,7 +400,8 @@ class ProfileView(View):
         })
         profile_pic_form = self.profile_form_class()
 
-        context = {"form": form, "profile_pic_form": profile_pic_form, "profile": profile, "articles": articles}
+        context = {"form": form, "profile_pic_form": profile_pic_form,
+                   "profile": profile, "articles": articles}
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -423,7 +432,8 @@ class ProfilePicUpdateView(View):
     form_class = ProfilePicUpdateForm
 
     def post(self, request):
-        form = self.form_class(files=request.FILES, instance=request.user.profile)
+        form = self.form_class(files=request.FILES,
+                               instance=request.user.profile)
         if form.is_valid():
             form.save()
         return redirect('profile-page')
@@ -451,12 +461,14 @@ class SearchView(View):
                 results = Article.objects.filter(tags__name__contains=tag_name)
             else:
                 # search for articles based on title
-                results = Article.objects.filter(main_title__contains=form.cleaned_data.get('keyword'))
+                results = Article.objects.filter(
+                    main_title__contains=form.cleaned_data.get('keyword'))
 
             if results:
                 #  add html results
                 self.context['articles'] = results
-                html_content = render_to_string(self.template_name, self.context, request)
+                html_content = render_to_string(
+                    self.template_name, self.context, request)
 
                 # add results to data dict
                 self.data['success'] = True
