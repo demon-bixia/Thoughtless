@@ -1,11 +1,11 @@
-## About ℹ️
+### About ℹ️
 
 Thoughtless is a beautiful blogging platform 
 created with django, foundation css and jquery. it supports article creation, comments, authentication, registration, featured articles and search.
 
 <br>
 
-## Setup 🔧
+### Setup 🔧
 
 Here is how to setup this template:
 
@@ -29,29 +29,19 @@ python manage.py runserver
 
 <br>
 
-## Screenshots 📷
+### Screenshots 📷
+
+Here are some screenshots of the app. you can check out the rest in the screenshots folder.
 
 <img src="screenshots/all.png"/>
-<p style="text-align:center;">all  articles</p>
-<br/>
+<p style="text-align:center;width:100%;">all  articles</p>
+
 <br/>
 
 <img src="screenshots/create.png"/>
-<p style="text-align:center;">create  articles</p>
-<br/>
-<br/>
+<p style="text-align:center;width:100%;">create  articles</p>
 
-<img src="screenshots/register.png"/>
-<p style="text-align:center;">register users</p>
-<br/>
-<br/>
-
-<img src="screenshots/profile.png"/>
-<p style="text-align:center;">user profile</p>
-<br/>
 <br/>
 
 <img src="screenshots/featured.png"/>
-<p style="text-align:center;">featured  articles</p>
-<br/>
-<br/>
+<p style="text-align:center;width:100%;">featured  articles</p>
