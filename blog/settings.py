@@ -1,3 +1,4 @@
+import dj_database_url
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -6,6 +7,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=0))
+
+# set Allow hosts to the host of the deployed project
+if os.environ.get('ENV') == 'production':
+    ALLOWED_HOSTS = [
+        os.environ.get('APP_HOST')
+    ]
 
 WSGI_APPLICATIONS = "blog.wsgi.application"
 
@@ -16,7 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # 3rd party
@@ -29,7 +35,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -37,6 +42,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# add static file serving using whitenoise in production 
+if os.environ.get('ENV') == 'production':
+    INSTALLED_APPS.insert(5, 'whitenoise.runserver_nostatic')
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware',)
 
 ROOT_URLCONF = 'blog.urls'
 
@@ -58,16 +68,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT'),
+if os.environ.get('ENV') == 'production':
+    DATABASES = {
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DATABASE_NAME'),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'USER': os.environ.get('DATABASE_USER'),
+            'HOST': os.environ.get('DATABASE_HOST'),
+            'PORT': os.environ.get('DATABASE_PORT'),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -121,3 +136,12 @@ LOGIN_URL = "login-view"
 LOGIN_REDIRECT_URL = "articles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# https settings
+if os.environ.get('ENV') == 'production':
+    # Set this to True to avoid transmitting the CSRF cookie over HTTP accidentally.
+    CSRF_COOKIE_SECURE = True
+    # Set this to True to avoid transmitting the session cookie over HTTP accidentally.
+    SESSION_COOKIE_SECURE = True
+    # csrf won't work if this is net set.
+    CSRF_TRUSTED_ORIGINS = [os.environ.get('APP_ORIGIN')]
