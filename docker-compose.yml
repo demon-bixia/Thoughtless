@@ -19,7 +19,7 @@ services:
       - db
     # the file containing environment variables for running the web server
     env_file:
-        - .env
+        - ./.env
 
   # define a database service with name db
   db:
@@ -31,7 +31,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     # the file containing environment variables for running the database
     env_file:
-        - .env
+        - ./.env
 
 # list all named volumes in here
 volumes:
